@@ -8,7 +8,7 @@ const Section = styled('section')(({ theme }) => ({
   padding: '20px',
 }));
 
-const BoxKeyValue = styled('div')(({ theme }) => ({
+const BoxKeyValue = styled('div')(() => ({
   display: 'inline-block',
 
   '&:nth-child(1)': {
@@ -25,15 +25,20 @@ const Title = styled('h2')(() => ({
 
 const Key = styled('dt')(({ theme }) => ({
   fontSize: '0.9rem',
-  lineHeight: 1.7,
+  lineHeight: 1.65,
   color: theme.palette.primary.shades[600],
   letterSpacing: '0.1px',
 }));
 
-const Value = styled('dd')(() => ({
+const Value = styled('dd')(({ theme }) => ({
   fontSize: '1.2rem',
   whiteSpace: 'pre',
   letterSpacing: '0.1px',
+
+  '& a': {
+    color: theme.palette.common.white,
+    textDecoration: 'none',
+  },
 }));
 
 const List = styled(MuiList)(() => ({
@@ -68,11 +73,15 @@ function TechnicalSupport() {
       <dl>
         <BoxKeyValue>
           <Key>Номер поддеркжи:</Key>
-          <Value>8 (999) 999 99 99</Value>
+          <Value>
+            <a href='tel:89999999999'>8 (999) 999 99 99</a>
+          </Value>
         </BoxKeyValue>
         <BoxKeyValue>
           <Key>Почта поддержки:</Key>
-          <Value>pf1@werthesest.ru</Value>
+          <Value>
+            <a href='mailto:pf1@werthesest.ru'>pf1@werthesest.ru</a>
+          </Value>
         </BoxKeyValue>
         <BoxKeyValue>
           <Key>Часы работы:</Key>
@@ -80,20 +89,22 @@ function TechnicalSupport() {
         </BoxKeyValue>
       </dl>
 
-      <List>
-        <ListItem>
-          <Link href='#'>Пользовательское соглашение</Link>
-        </ListItem>
-        <ListItem>
-          <Link href='#'>Политика конфиденциальности</Link>
-        </ListItem>
-        <ListItem>
-          <Link href='#'>Юридическая информация</Link>
-        </ListItem>
-        <ListItem>
-          <Link href='#'>Публичная оферта</Link>
-        </ListItem>
-      </List>
+      <nav>
+        <List>
+          <ListItem>
+            <Link href='#'>Пользовательское соглашение</Link>
+          </ListItem>
+          <ListItem>
+            <Link href='#'>Политика конфиденциальности</Link>
+          </ListItem>
+          <ListItem>
+            <Link href='#'>Юридическая информация</Link>
+          </ListItem>
+          <ListItem>
+            <Link href='#'>Публичная оферта</Link>
+          </ListItem>
+        </List>
+      </nav>
     </Section>
   );
 }
