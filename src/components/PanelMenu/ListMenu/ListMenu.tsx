@@ -29,7 +29,7 @@ const List = styled(MuiList)(() => ({
 
 const ListItemButton = styled(MuiListItemButton)(
   ({ theme }: { theme: Theme }) => ({
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.shades[800],
   }),
 );
 
@@ -70,7 +70,10 @@ function ListMenu() {
               onClick={handleOnClick}
             >
               <ListItemIcon>{main.icon}</ListItemIcon>
-              <ListItemText primary={main.name} />
+              <ListItemText
+                primary={main.name}
+                primaryTypographyProps={{ fontSize: '1.6rem' }}
+              />
               {isOpen[main.name] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse

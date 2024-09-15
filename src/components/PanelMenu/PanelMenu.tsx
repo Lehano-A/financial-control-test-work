@@ -4,24 +4,21 @@ import { Box, Button } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import ListMenu from './ListMenu/ListMenu';
+import { widgetMixin } from '../../mixins/widgetMixin';
 
 const Section = styled('section')(({ theme }: { theme: Theme }) => {
   return {
+    ...widgetMixin(theme),
     display: 'flex',
-    width: '293px',
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: theme.customVariables.borderRadiusMain,
     flexDirection: 'column',
-    padding: '10px',
   };
 });
 
 const Title = styled('h2')(({ theme }: { theme: Theme }) => ({
   color: theme.palette.common.white,
-  fontSize: '18px',
+  fontSize: '1.8rem',
   lineHeight: '0.9',
   fontWeight: '500',
-  margin: '0',
 
   '& > span': {
     display: 'inline-block',
@@ -34,11 +31,11 @@ const Title = styled('h2')(({ theme }: { theme: Theme }) => ({
 
 const ButtonMenu = styled(Button)(({ theme }: { theme: Theme }) => ({
   textTransform: 'none',
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.palette.primary.shades[800],
   height: '25px',
   borderRadius: '25px',
   lineHeight: 0,
-  fontSize: '11px',
+  fontSize: '1.1rem',
   padding: '0',
 }));
 
@@ -50,7 +47,7 @@ const Header = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '10px 10px 20px 10px',
+  padding: '0 10px 20px 10px',
 }));
 
 function PanelMenu() {

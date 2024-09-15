@@ -8,7 +8,6 @@ import { NestedListProps } from './NestedList.types';
 
 const ListItemButton = styled(MuiListItemButton)(() => ({
   paddingLeft: '48px',
-  fontSize: '12px',
 }));
 
 function NestedList({ nestedData }: { nestedData: NestedListProps[] }) {
@@ -21,7 +20,7 @@ function NestedList({ nestedData }: { nestedData: NestedListProps[] }) {
           <ListItemButton key={id}>
             <ListItemText
               primary={name}
-              primaryTypographyProps={{ fontSize: '15px' }}
+              primaryTypographyProps={{ fontSize: '1.5rem' }}
             />
           </ListItemButton>
         );
