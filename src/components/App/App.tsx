@@ -3,6 +3,7 @@ import PanelMenu from '../PanelMenu/PanelMenu';
 import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
 import ButtonCommunication from '../ButtonCommunication/ButtonCommunication';
 import { styled } from '@mui/material';
+import UserInfo from '../UserInfo/UserInfo';
 
 const Aside = styled('aside')(() => ({
   display: 'flex',
@@ -16,11 +17,17 @@ const Aside = styled('aside')(() => ({
 
 function App() {
   return (
-    <Aside>
-      <PanelMenu />
-      <TechnicalSupport />
-      <ButtonCommunication />
-    </Aside>
+    <>
+      <Aside>
+        <PanelMenu />
+        <TechnicalSupport />
+        <ButtonCommunication />
+      </Aside>
+
+      <header>
+        <UserInfo />
+      </header>
+    </>
   );
 }
 

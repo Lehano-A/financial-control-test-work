@@ -9,10 +9,12 @@ const palette = {
   primary: {
     main: '#171d2d',
     shades: {
+      300: '#c8cbe8',
       600: '#686e8f',
       800: '#292f46',
     },
   },
+
   secondary: { main: '#297fff', light: '#eef5ff' },
   accent: { main: '#ff6b19' },
   bg: { main: '#eff1f3' },
@@ -60,10 +62,21 @@ const theme = createTheme({
 
 const globalStyles = (
   <GlobalStyles
-    styles={() => ({
+    styles={(theme) => ({
       html: {
         fontSize: '10px',
       },
+      '#root': {
+        display: 'flex',
+        width: '100%',
+        height: '100vh',
+        backgroundColor: theme.palette.shades.grey[400],
+      },
+
+      'div, section, button': {
+        borderRadius: theme.customVariables.borderRadiusMain,
+      },
+
       h2: {
         margin: 0,
       },
