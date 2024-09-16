@@ -8,7 +8,6 @@ const Button = styled(MuiButton)(({ theme }) => ({
   fontSize: '15px',
   backgroundColor: theme.palette.secondary.main,
   color: '#fff',
-  textTransform: 'none',
   borderRadius: theme.customVariables.borderRadiusMain,
 }));
 

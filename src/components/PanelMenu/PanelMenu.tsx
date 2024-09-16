@@ -30,7 +30,6 @@ const Title = styled('h2')(({ theme }: { theme: Theme }) => ({
 }));
 
 const ButtonMenu = styled(Button)(({ theme }: { theme: Theme }) => ({
-  textTransform: 'none',
   backgroundColor: theme.palette.primary.shades[800],
   height: '25px',
   borderRadius: '25px',

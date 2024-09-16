@@ -67,7 +67,6 @@ const BoxUserActions = styled('div')(() => ({
 
 const ButtonLogout = styled(Button)(({ theme }) => ({
   fontSize: '1.3rem',
-  textTransform: 'none',
   borderRadius: '40px',
   padding: '3px',
   color: theme.palette.primary.main,
@@ -75,7 +74,6 @@ const ButtonLogout = styled(Button)(({ theme }) => ({
 
 const ButtonAbout = styled(Button)(({ theme }) => ({
   fontSize: '1.3rem',
-  textTransform: 'none',
   borderRadius: '40px',
   backgroundColor: theme.palette.accent.main,
   padding: '3px',
