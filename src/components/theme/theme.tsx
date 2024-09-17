@@ -10,6 +10,7 @@ const palette = {
     main: '#171d2d',
     shades: {
       300: '#c8cbe8',
+      500: '#929dc0',
       600: '#686e8f',
       800: '#292f46',
     },
@@ -25,13 +26,21 @@ const palette = {
       300: '#f8f8fa',
       400: '#eff1f3',
       500: '#e7eae9',
+      600: '#dddddd',
+      700: '#c9c9c9',
+      800: '#acacac',
     },
   },
 
   text: {
-    primary: '#000',
+    primary: '#161620',
     secondary: '#585858',
   },
+};
+
+const customVariables = {
+  borderRadiusMain: 20,
+  borderRadiusSpan: 5,
 };
 
 const theme = createTheme({
@@ -41,10 +50,7 @@ const theme = createTheme({
     fontFamily: `"Roboto", sans-serif`,
   },
 
-  customVariables: {
-    borderRadiusMain: 20,
-    borderRadiusSpan: 5,
-  },
+  customVariables,
 
   components: {
     MuiListItemButton: {
@@ -60,7 +66,10 @@ const theme = createTheme({
 
     MuiButton: {
       styleOverrides: {
-        root: { textTransform: 'none' },
+        root: {
+          textTransform: 'none',
+          borderRadius: customVariables.borderRadiusMain,
+        },
       },
     },
   },
@@ -83,10 +92,7 @@ const globalStyles = (
         borderRadius: theme.customVariables.borderRadiusMain,
       },
 
-      h2: {
-        margin: 0,
-      },
-      dd: {
+      'h1, h2, dl, dd': {
         margin: 0,
       },
     })}

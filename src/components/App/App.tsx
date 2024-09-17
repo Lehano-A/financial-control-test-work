@@ -2,8 +2,11 @@ import React from 'react';
 import PanelMenu from '../PanelMenu/PanelMenu';
 import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
 import ButtonCommunication from '../ButtonCommunication/ButtonCommunication';
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import UserInfo from '../UserInfo/UserInfo';
+import ProductPanel from '../ProductPanel/ProductPanel';
+import Main from '../layouts/Main/Main';
+import Header from '../layouts/Header/Header';
 
 const Aside = styled('aside')(() => ({
   display: 'flex',
@@ -15,6 +18,10 @@ const Aside = styled('aside')(() => ({
   },
 }));
 
+const Wrapper = styled(Box)(() => ({
+  marginLeft: '40px',
+}));
+
 function App() {
   return (
     <>
@@ -24,9 +31,15 @@ function App() {
         <ButtonCommunication />
       </Aside>
 
-      <header>
-        <UserInfo />
-      </header>
+      <Wrapper>
+        <Header>
+          <UserInfo />
+        </Header>
+
+        <Main>
+          <ProductPanel />
+        </Main>
+      </Wrapper>
     </>
   );
 }
