@@ -1,5 +1,5 @@
 import React from 'react';
-import PanelMenu from '../PanelMenu/PanelMenu';
+import Menu from '../Menu/Menu';
 import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
 import ButtonCommunication from '../ButtonCommunication/ButtonCommunication';
 import { Box, styled } from '@mui/material';
@@ -26,7 +26,7 @@ function App() {
   return (
     <>
       <Aside>
-        <PanelMenu />
+        <Menu />
         <TechnicalSupport />
         <ButtonCommunication />
       </Aside>

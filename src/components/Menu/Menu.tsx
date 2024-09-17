@@ -49,7 +49,7 @@ const Header = styled(Box)(() => ({
   padding: '0 10px 20px 10px',
 }));
 
-function PanelMenu() {
+function Menu() {
   return (
     <Section>
       <Header>
@@ -69,4 +69,4 @@ function PanelMenu() {
   );
 }
 
-export default PanelMenu;
+export default Menu;
