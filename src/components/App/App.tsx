@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from '../Menu/Menu';
 import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
-import ButtonCommunication from '../ButtonCommunication/ButtonCommunication';
+import ButtonCommunication from '../Menu/ButtonCommunication/ButtonCommunication';
 import { Box, styled } from '@mui/material';
 import UserInfo from '../UserInfo/UserInfo';
 import ProductPanel from '../ProductPanel/ProductPanel';
