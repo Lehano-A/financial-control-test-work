@@ -1,5 +1,5 @@
 import { styled, TableBody as MuiTableBody } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import dataTable from '../../data/data.json';
 import { Data } from '../../data/types/data.types';
@@ -59,10 +59,10 @@ function TableBodyCustom({ selected, handleClick }: TableBodyCustomProps) {
     }
   }, [sizeInputCell, paramsInputCell.rowId]);
 
-  function resetStatesByDefault() {
+  const resetStatesByDefault = useCallback(() => {
     setValueInputCell(defaultValueInputCell);
     setParamsInputCell(defaultParamsInputCell);
-  }
+  }, []);
 
   return (
     <TableBody
