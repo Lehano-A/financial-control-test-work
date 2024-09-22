@@ -1,4 +1,3 @@
-import React from 'react';
 import { NativeSelect, styled } from '@mui/material';
 
 const DescriptionList = styled('dl')(() => ({

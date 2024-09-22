@@ -1,8 +1,8 @@
 import { HandleMouseMove } from '../types/handleOnMouseMoveTypes/handleMouseMove.types';
 import { HandleScrollMovement } from '../types/handleOnMouseMoveTypes/handleScrollMovement.types';
-import handleMovementAlongAxis from './logic/handleMovementAlongAxis';
-import calcParams from './logic/calcParams';
 import calcKeys from './logic/calcKeys';
+import calcParams from './logic/calcParams';
+import handleMovementAlongAxis from './logic/handleMovementAlongAxis';
 
 function handleOnMouseMove({
   e,

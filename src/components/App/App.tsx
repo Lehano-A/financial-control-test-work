@@ -1,12 +1,13 @@
-import React from 'react';
-import Menu from '../Menu/Menu';
-import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
-import ButtonCommunication from '../Menu/ButtonCommunication/ButtonCommunication';
 import { Box, styled } from '@mui/material';
-import UserInfo from '../UserInfo/UserInfo';
+
+import ButtonCommunication from '../Menu/ButtonCommunication/ButtonCommunication';
+import Menu from '../Menu/Menu';
 import ProductPanel from '../ProductPanel/ProductPanel';
-import Main from '../layouts/Main/Main';
+import TableProducts from '../TableProducts/TableProducts';
+import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
+import UserInfo from '../UserInfo/UserInfo';
 import Header from '../layouts/Header/Header';
+import Main from '../layouts/Main/Main';
 
 const Aside = styled('aside')(() => ({
   display: 'flex',
@@ -21,7 +22,6 @@ const Aside = styled('aside')(() => ({
 const Wrapper = styled(Box)(() => ({
   marginLeft: '40px',
 }));
-
 function App() {
   return (
     <>
@@ -38,6 +38,7 @@ function App() {
 
         <Main>
           <ProductPanel />
+          <TableProducts />
         </Main>
       </Wrapper>
     </>

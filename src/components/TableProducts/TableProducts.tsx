@@ -1,10 +1,9 @@
-import * as React from 'react';
-
 import { styled, useTheme } from '@mui/material/';
-
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
+import * as React from 'react';
+
 import FakeScroll from '../FakeScroll/FakeScroll';
 import TableBodyCustom from './TableParts/TableBodyCustom/TableBodyCustom';
 import TableHeadCustom from './TableParts/TableHeadCustom/TableHeadCustom';

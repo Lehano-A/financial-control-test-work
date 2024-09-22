@@ -1,6 +1,6 @@
-import React from 'react';
-import { MainProps } from './Main.types';
 import { styled } from '@mui/material';
+
+import { MainProps } from './Main.types';
 
 const StyledMain = styled('main')(() => ({
   display: 'flex',

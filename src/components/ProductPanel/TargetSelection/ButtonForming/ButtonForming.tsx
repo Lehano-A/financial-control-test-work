@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button as MuiButton, styled } from '@mui/material';
+
 import buttonActionMixin from '../../../../mixins/buttonActionMixin';
 
 const Button = styled(MuiButton)(({ theme }) => ({

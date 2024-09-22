@@ -1,9 +1,9 @@
-import React from 'react';
-import { styled, Button, Divider as MuiDivider } from '@mui/material';
-import buttonActionMixin from '../../../mixins/buttonActionMixin';
+import ClearIcon from '@mui/icons-material/Clear';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import RuleFolderIcon from '@mui/icons-material/RuleFolder';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Button, Divider as MuiDivider, styled } from '@mui/material';
+
+import buttonActionMixin from '../../../mixins/buttonActionMixin';
 import { ButtonActionProps } from './buttonActionProps.types';
 
 const BoxButtonActions = styled('div')(({ theme }) => ({

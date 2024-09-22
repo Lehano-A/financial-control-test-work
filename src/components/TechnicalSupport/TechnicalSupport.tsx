@@ -1,6 +1,6 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
 import { List as MuiList, ListItem as MuiListItem } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
 import { widgetMixin } from '../../mixins/widgetMixin';
 
 const Section = styled('section')(({ theme }) => ({

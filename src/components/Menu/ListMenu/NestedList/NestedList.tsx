@@ -1,9 +1,9 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
 import {
   ListItemButton as MuiListItemButton,
   ListItemText,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
 import { NestedListProps } from './NestedList.types';
 
 const ListItemButton = styled(MuiListItemButton)(() => ({

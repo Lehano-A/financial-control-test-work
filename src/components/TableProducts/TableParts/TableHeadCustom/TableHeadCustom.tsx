@@ -1,6 +1,6 @@
 import { Box, TableHead, TableSortLabel } from '@mui/material';
-
 import { visuallyHidden } from '@mui/utils';
+
 import TableCell from '../styled/StyledTableCell';
 import TableRow from '../styled/StyledTableRow';
 import { HeadCell } from './types/headCell.types';

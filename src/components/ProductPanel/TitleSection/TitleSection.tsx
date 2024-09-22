@@ -1,7 +1,7 @@
-import React from 'react';
 import DescriptionIcon from '@mui/icons-material/Description';
+import { Button as MuiButton, styled } from '@mui/material';
+
 import buttonActionMixin from '../../../mixins/buttonActionMixin';
-import { styled, Button as MuiButton } from '@mui/material';
 
 const Title = styled('h1')(({ theme }) => ({
   fontSize: '28px',

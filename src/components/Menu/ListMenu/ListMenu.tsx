@@ -1,6 +1,5 @@
-import React, { useEffect, useState, MouseEvent } from 'react';
-import { Theme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import {
   Collapse,
   List as MuiList,
@@ -8,11 +7,12 @@ import {
   ListItemIcon as MuiListItemIcon,
   ListItemText,
 } from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import dataList from './data';
-import NestedList from './NestedList/NestedList';
+import { styled, Theme } from '@mui/material/styles';
+import React, { MouseEvent, useEffect, useState } from 'react';
+
 import { IsOpenState } from './ListMenu.types';
+import NestedList from './NestedList/NestedList';
+import dataList from './data';
 
 const List = styled(MuiList)(() => ({
   display: 'flex',

@@ -20,5 +20,10 @@
     "jsx": "react-jsx"
   },
   "paths": { "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"] },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "src/components/TableProducts/TableParts/TableCellCustom/TableCellCustom.tsx"
+  ]
 }

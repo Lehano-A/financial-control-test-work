@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import dataTable from '../../data/data.json';
 import { Data } from '../../data/types/data.types';
-import TableRow from '../styled/StyledTableRow';
 import TableCellCustom from '../TableCellCustom/TableCellCustom';
+import TableRow from '../styled/StyledTableRow';
 import InputCell from './InputCell/InputCell';
 import { ParamsInputCell } from './InputCell/types/paramsInputCell.types';
 import { TableBodyCustomProps } from './types/tableBodyCustomProps.types';

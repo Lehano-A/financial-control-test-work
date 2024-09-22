@@ -1,6 +1,5 @@
-import React from 'react';
-import { Button as MuiButton, styled } from '@mui/material';
 import SmsRoundedIcon from '@mui/icons-material/SmsRounded';
+import { Button as MuiButton, styled } from '@mui/material';
 
 const Button = styled(MuiButton)(({ theme }) => ({
   width: '100%',

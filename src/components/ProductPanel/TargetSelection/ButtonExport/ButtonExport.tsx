@@ -1,6 +1,6 @@
-import React from 'react';
-import { styled, Button as MuiButton } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { Button as MuiButton, styled } from '@mui/material';
+
 import buttonActionMixin from '../../../../mixins/buttonActionMixin';
 
 const Button = styled(MuiButton)(({ theme }) => ({

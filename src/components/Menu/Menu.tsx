@@ -1,10 +1,9 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Button } from '@mui/material';
-import { Theme } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
-import ListMenu from './ListMenu/ListMenu';
+import { Box, Button } from '@mui/material';
+import { styled, Theme } from '@mui/material/styles';
+
 import { widgetMixin } from '../../mixins/widgetMixin';
+import ListMenu from './ListMenu/ListMenu';
 
 const Section = styled('section')(({ theme }: { theme: Theme }) => {
   return {

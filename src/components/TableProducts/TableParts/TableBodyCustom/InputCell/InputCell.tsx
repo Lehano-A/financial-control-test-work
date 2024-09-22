@@ -1,6 +1,6 @@
+import { styled } from '@mui/material';
 import React, { useEffect } from 'react';
 
-import { styled } from '@mui/material';
 import { InputCellProps } from './types/inputCellProps.types';
 import { StyledInputProps } from './types/styledInputProps.types';
 import { ValueInputCell } from './types/valueInputCell.types';

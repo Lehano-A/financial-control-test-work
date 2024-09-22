@@ -1,4 +1,5 @@
 import React from 'react';
+
 import StyledTableCell from '../styled/StyledTableCell';
 import { TableCellCustomProps } from './types/tableCellSutomProps.types';
 

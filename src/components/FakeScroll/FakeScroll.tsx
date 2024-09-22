@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useCallback } from 'react';
 import { Box, styled } from '@mui/material';
+import React, { useCallback, useEffect, useRef } from 'react';
+
+import { defaultFakeThumbParams } from './contstants/constants';
 import handleOnMouseMove from './handlersRealScroll/handleOnMouseMove/handleOnMouseMove';
 import handleOnScroll from './handlersRealScroll/handleOnScroll/handleOnScroll';
-import getNumFromString from './utils/getNumFromString';
 import { CalcedParamsFakeTrack } from './types/calcedParamsFakeTrack.types';
-import { TrackProps } from './types/trackProps.types';
-import { ThumbProps } from './types/thumbPropsTypes.types';
 import { FakeScrollProps } from './types/fakeScrollProps.types';
-import { defaultFakeThumbParams } from './contstants/constants';
+import { ThumbProps } from './types/thumbPropsTypes.types';
+import { TrackProps } from './types/trackProps.types';
+import getNumFromString from './utils/getNumFromString';
 
 const calcedParamsFakeTrack: CalcedParamsFakeTrack = {
   width: 0,

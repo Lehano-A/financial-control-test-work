@@ -1,8 +1,7 @@
-import React from 'react';
-import { Button, Chip as MuiChip, styled } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { Button, Chip as MuiChip, styled } from '@mui/material';
 
 const Section = styled('section')(({ theme }) => ({
   minWidth: '735px',

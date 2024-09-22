@@ -1,7 +1,7 @@
-import SettingsIcon from '@mui/icons-material/Settings';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
-import SummarizeIcon from '@mui/icons-material/Summarize';
+import SettingsIcon from '@mui/icons-material/Settings';
 import StorageIcon from '@mui/icons-material/Storage';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 
 const dataList = [
   {

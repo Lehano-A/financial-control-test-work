@@ -1,9 +1,9 @@
-import React from 'react';
 import { styled } from '@mui/material';
-import TargetSelection from './TargetSelection/TargetSelection';
-import ButtonForming from './TargetSelection/ButtonForming/ButtonForming';
-import ButtonExport from './TargetSelection/ButtonExport/ButtonExport';
+
 import ControlDataActions from './ControlDataActions/ControlDataActions';
+import ButtonExport from './TargetSelection/ButtonExport/ButtonExport';
+import ButtonForming from './TargetSelection/ButtonForming/ButtonForming';
+import TargetSelection from './TargetSelection/TargetSelection';
 import TitleSection from './TitleSection/TitleSection';
 
 const Header = styled('header')(() => ({

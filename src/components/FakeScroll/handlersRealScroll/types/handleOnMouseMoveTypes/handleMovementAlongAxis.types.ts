@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+
 import { HandleMouseMove } from './handleMouseMove.types';
 
 export interface HandleMovementAlongAxis {
