@@ -10,7 +10,7 @@ const buttonActionMixin = ({
   letterSpacing: '0.8px',
   padding: '10px 5px',
 
-  '&:nth-child(1n):not(:last-child)': {
+  '&:nth-of-type(1n):not(:last-child)': {
     marginRight: gapBetween,
   },
 

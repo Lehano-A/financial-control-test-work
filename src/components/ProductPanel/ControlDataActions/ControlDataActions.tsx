@@ -27,7 +27,7 @@ const ButtonAction = styled(Button, {
   letterSpacing: '-0.5px',
   borderRadius: '0',
 
-  '&:nth-child(1n)': {
+  '&:nth-of-type(1n)': {
     paddingTop: '7px',
     paddingBottom: '7px',
   },

@@ -12,7 +12,7 @@ const BoxKeyValue = styled('div')(({ theme }) => ({
   padding: '0 10px 0 12px',
   borderRadius: '15px',
 
-  '&:nth-child(1n):not(:last-child)': {
+  '&:nth-of-type(1n):not(:last-child)': {
     marginRight: '5px',
   },
 }));

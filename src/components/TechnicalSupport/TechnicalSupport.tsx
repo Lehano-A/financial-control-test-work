@@ -11,7 +11,7 @@ const Section = styled('section')(({ theme }) => ({
 const BoxKeyValue = styled('div')(() => ({
   display: 'inline-block',
 
-  '&:nth-child(1)': {
+  '&:nth-of-type(1)': {
     margin: ' 0 30px 15px 0',
   },
 }));
@@ -50,7 +50,7 @@ const ListItem = styled(MuiListItem)(({ theme }) => ({
   alignItems: 'flex-start',
   padding: '6px 0',
 
-  '&:nth-child(1n):not(:last-child)': {
+  '&:nth-of-type(1n):not(:last-child)': {
     borderBottom: `1px solid ${theme.palette.primary.shades[600]}`,
   },
 

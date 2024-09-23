@@ -15,7 +15,7 @@ const Header = styled('header')(() => ({
 const BoxProductInfo = styled('div')(() => ({
   marginBottom: '21px',
 
-  '& > :nth-child(1)': {
+  '& > :nth-of-type(1)': {
     marginBottom: '7px',
   },
 

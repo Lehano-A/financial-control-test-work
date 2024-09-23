@@ -14,7 +14,7 @@ const Aside = styled('aside')(() => ({
   flexDirection: 'column',
   width: '293px',
 
-  '& > :nth-child(1n):not(:last-child)': {
+  '& > :nth-of-type(1n):not(:last-child)': {
     marginBottom: '4px',
   },
 }));

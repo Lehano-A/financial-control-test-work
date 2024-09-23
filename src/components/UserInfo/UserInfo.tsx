@@ -18,7 +18,7 @@ const BoxUserDetails = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
 
-  '& > :nth-child(1n):not(:last-child)': {
+  '& > :nth-of-type(1n):not(:last-child)': {
     marginRight: '18px',
   },
 }));
@@ -59,7 +59,7 @@ const BoxUserActions = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
 
-  '& > :nth-child(1n):not(:last-child)': {
+  '& > :nth-of-type(1n):not(:last-child)': {
     marginRight: '5px',
   },
 }));
