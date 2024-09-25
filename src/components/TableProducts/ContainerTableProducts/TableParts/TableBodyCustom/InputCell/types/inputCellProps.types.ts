@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-import { DataProduct } from '../../types/dataProduct.types';
+import { Data } from '../../../../../types/data.types';
 import { ParamsInputCell } from './paramsInputCell.types';
 import { SizeInputCell } from './sizeInputCell.types';
 import { ValueInputCell } from './valueInputCell.types';
@@ -8,7 +8,7 @@ import { ValueInputCell } from './valueInputCell.types';
 export interface InputCellProps {
   autoFocus: boolean;
   defaultValue: string;
-  dataProducts: DataProduct[];
+  dataProducts: Data[];
   valueInputCell: ValueInputCell;
   paramsInputCell: ParamsInputCell;
   sizeInputCell: SizeInputCell;
@@ -17,6 +17,6 @@ export interface InputCellProps {
     [key: string]: string;
   };
   setValueInputCell: Dispatch<SetStateAction<{ start: string; new: string }>>;
-  setDataProducts: Dispatch<any>;
+  changeTableData: (newData: Data[]) => void;
   setWasDoubleClickByCell: Dispatch<boolean>;
 }

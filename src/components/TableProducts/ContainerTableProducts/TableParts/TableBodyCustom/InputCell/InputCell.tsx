@@ -1,6 +1,8 @@
 import { styled } from '@mui/material';
 import React, { useEffect } from 'react';
 
+import assignCellValue from '../../../../../../helpers/assignCellValue';
+import { Data } from '../../../../types/data.types';
 import { InputCellProps } from './types/inputCellProps.types';
 import { StyledInputProps } from './types/styledInputProps.types';
 import { ValueInputCell } from './types/valueInputCell.types';
@@ -30,7 +32,7 @@ function InputCell({
   style,
   setValueInputCell,
   valueInputCell,
-  setDataProducts,
+  changeTableData,
   sizeInputCell,
   setWasDoubleClickByCell,
   paramsInputCell,
@@ -58,15 +60,20 @@ function InputCell({
 
   // обработать сохранение нового вводного значения
   function handleSaveNewInputValue() {
-    const cellName = paramsInputCell.name;
+    const cellName = paramsInputCell.name as keyof Data;
     const rowId = paramsInputCell.rowId;
     if (cellName && rowId) {
       const updatedData = [...dataProducts];
       const idChangingItem = updatedData.findIndex(
-        (item: { [key: string]: string }) => item.id.toString() === rowId,
+        (item: Data) => item.id.toString() === rowId,
       ); // находим id строки, в которой будет изменять значение
-      updatedData[idChangingItem][cellName] = valueInputCell.new;
-      setDataProducts(updatedData);
+
+      assignCellValue(
+        updatedData[idChangingItem],
+        cellName,
+        valueInputCell.new,
+      );
+      changeTableData(updatedData);
     }
   }
 

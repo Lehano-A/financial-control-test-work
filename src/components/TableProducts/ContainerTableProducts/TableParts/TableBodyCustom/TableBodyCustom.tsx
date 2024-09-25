@@ -1,8 +1,7 @@
 import { styled, TableBody as MuiTableBody } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import dataTable from '../../data/data.json';
-import { Data } from '../../data/types/data.types';
+import { Data } from '../../../types/data.types';
 import TableCellCustom from '../TableCellCustom/TableCellCustom';
 import TableRow from '../styled/StyledTableRow';
 import InputCell from './InputCell/InputCell';
@@ -13,19 +12,32 @@ const TableBody = styled(MuiTableBody)(() => ({
   '& td': { color: 'black', fontWeight: 'bold' },
 }));
 
+export interface DefaultParamsInputCell {
+  name: '';
+  rowId: '';
+  id: '';
+  style: {};
+}
 const defaultValueInputCell = { start: '', new: '' };
-const defaultParamsInputCell = { name: '', rowId: '', id: '', style: {} };
+const defaultParamsInputCell: DefaultParamsInputCell = {
+  name: '',
+  rowId: '',
+  id: '',
+  style: {},
+};
 
-function TableBodyCustom({ selected, handleClick }: TableBodyCustomProps) {
+function TableBodyCustom({
+  dataProducts,
+  changeTableData,
+  selected,
+  handleClick,
+}: TableBodyCustomProps) {
   const [valueInputCell, setValueInputCell] = useState(defaultValueInputCell);
   const [wasDoubleClickByCell, setWasDoubleClickByCell] = useState(false);
   const [sizeInputCell, setSizeInputCell] = useState({ width: 0 });
 
   const [paramsInputCell, setParamsInputCell] = useState<ParamsInputCell>(
     defaultParamsInputCell,
-  );
-  const [dataProducts, setDataProducts] = useState(
-    JSON.parse(JSON.stringify(dataTable)),
   );
 
   // обработать даблклик
@@ -102,7 +114,7 @@ function TableBodyCustom({ selected, handleClick }: TableBodyCustomProps) {
                         dataProducts={dataProducts}
                         setValueInputCell={setValueInputCell}
                         valueInputCell={valueInputCell}
-                        setDataProducts={setDataProducts}
+                        changeTableData={changeTableData}
                         sizeInputCell={sizeInputCell}
                         setWasDoubleClickByCell={setWasDoubleClickByCell}
                         paramsInputCell={paramsInputCell}
