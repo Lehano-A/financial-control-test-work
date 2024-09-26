@@ -13,10 +13,8 @@ const Header = styled('header')(() => ({
 }));
 
 const BoxProductInfo = styled('div')(() => ({
-  marginBottom: '21px',
-
-  '& > :nth-of-type(1)': {
-    marginBottom: '7px',
+  '& > :nth-of-type(1n)': {
+    marginTop: '7px',
   },
 
   '& > button:not(:last-child)': {
@@ -24,7 +22,9 @@ const BoxProductInfo = styled('div')(() => ({
   },
 }));
 
-const BoxActions = styled('div')(() => ({}));
+const BoxActions = styled('div')(() => ({
+  margin: '21px 0',
+}));
 
 function ProductPanel() {
   return (
