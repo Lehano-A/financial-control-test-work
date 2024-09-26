@@ -2,8 +2,6 @@ import { Box, styled } from '@mui/material';
 
 import ButtonCommunication from '../Menu/ButtonCommunication/ButtonCommunication';
 import Menu from '../Menu/Menu';
-import ProductPanel from '../ProductPanel/ProductPanel';
-import TableProducts from '../TableProducts/TableProducts';
 import TechnicalSupport from '../TechnicalSupport/TechnicalSupport';
 import UserInfo from '../UserInfo/UserInfo';
 import Header from '../layouts/Header/Header';
@@ -22,6 +20,7 @@ const Aside = styled('aside')(() => ({
 const Wrapper = styled(Box)(() => ({
   marginLeft: '40px',
 }));
+
 function App() {
   return (
     <>
@@ -36,10 +35,7 @@ function App() {
           <UserInfo />
         </Header>
 
-        <Main>
-          <ProductPanel />
-          <TableProducts />
-        </Main>
+        <Main />
       </Wrapper>
     </>
   );
