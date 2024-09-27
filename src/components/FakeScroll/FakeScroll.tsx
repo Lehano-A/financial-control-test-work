@@ -4,15 +4,17 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { defaultFakeThumbParams } from './contstants/constants';
 import handleOnMouseMove from './handlersRealScroll/handleOnMouseMove/handleOnMouseMove';
 import handleOnScroll from './handlersRealScroll/handleOnScroll/handleOnScroll';
+import checkForRealScroll from './helpers/checkForRealScroll';
+import getNumFromString from './helpers/getNumFromString';
 import { CalcedParamsFakeTrack } from './types/calcedParamsFakeTrack.types';
 import { FakeScrollProps } from './types/fakeScrollProps.types';
 import { ThumbProps } from './types/thumbPropsTypes.types';
 import { TrackProps } from './types/trackProps.types';
-import getNumFromString from './utils/getNumFromString';
 
 const calcedParamsFakeTrack: CalcedParamsFakeTrack = {
   width: 0,
   height: 0,
+  display: 'none',
 };
 
 const Track = styled(Box, {
@@ -24,26 +26,31 @@ const Track = styled(Box, {
   const { width: incomingWidth, height: incomingHeight } = style.track.size;
 
   if (mainBoxWithRealScrollRef?.current) {
-    const { offsetWidth, offsetHeight } = mainBoxWithRealScrollRef.current;
+    const { scrollWidth, scrollHeight, offsetWidth, offsetHeight } =
+      mainBoxWithRealScrollRef.current;
 
-    const targetWidth = getNumFromString(incomingWidth);
-    const targetHeight = getNumFromString(incomingHeight);
+    const customWidth = getNumFromString(incomingWidth);
+    const customHeight = getNumFromString(incomingHeight);
 
     if (typeScroll === 'horizontal') {
-      const widthFakeTrack = (offsetWidth / 100) * targetWidth;
+      const hasRealScroll = checkForRealScroll(scrollWidth, offsetWidth);
+      const widthFakeTrack = (offsetWidth / 100) * customWidth;
       calcedParamsFakeTrack.width = widthFakeTrack;
-      calcedParamsFakeTrack.height = targetHeight;
+      calcedParamsFakeTrack.height = customHeight;
+      calcedParamsFakeTrack.display = hasRealScroll ? 'flex' : 'none';
     }
 
     if (typeScroll === 'vertical') {
-      const heightFakeTrack = (offsetHeight / 100) * targetHeight;
-      calcedParamsFakeTrack.width = targetWidth;
+      const hasRealScroll = checkForRealScroll(scrollHeight, offsetHeight);
+      const heightFakeTrack = (offsetHeight / 100) * customHeight;
+      calcedParamsFakeTrack.width = customWidth;
       calcedParamsFakeTrack.height = heightFakeTrack;
+      calcedParamsFakeTrack.display = hasRealScroll ? 'flex' : 'none';
     }
   }
 
   return {
-    display: 'flex',
+    display: calcedParamsFakeTrack.display,
     width: `${calcedParamsFakeTrack.width}px`,
     height: `${calcedParamsFakeTrack.height}px`,
     backgroundColor: 'black',
