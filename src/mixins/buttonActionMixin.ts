@@ -1,4 +1,4 @@
-import { ButtonActionProps } from '../components/ProductPanel/ControlDataActions/buttonActionProps.types';
+import { ButtonActionProps } from '../components/ProductPanel/ControlDataActions/types/buttonActionProps.types';
 
 const buttonActionMixin = ({
   iconMargin = '0 3px 0 0',

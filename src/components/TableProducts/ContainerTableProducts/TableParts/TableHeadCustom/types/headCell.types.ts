@@ -1,6 +1,5 @@
 export interface HeadCell {
-  disablePadding: boolean;
+  dataType: string | number;
   id: string;
   label: string;
-  numeric: boolean;
 }

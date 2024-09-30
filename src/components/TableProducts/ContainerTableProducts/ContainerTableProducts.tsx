@@ -1,20 +1,21 @@
 import { Table, TableContainer, useTheme } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 
+import { Data } from '../../../data/types/dataProduct.types';
 import FakeScroll from '../../FakeScroll/FakeScroll';
-import { Data } from '../types/data.types';
 import TableBodyCustom from './TableParts/TableBodyCustom/TableBodyCustom';
 import TableHeadCustom from './TableParts/TableHeadCustom/TableHeadCustom';
 import { Order } from './TableParts/TableHeadCustom/types/tableHeadCustomProps.types';
 
 interface ContainerTableProductsProps {
   dataProducts: Data[];
-  changeTableData: (newData: Data[]) => void;
+
+  setDataProducts: Dispatch<Data[]>;
 }
 
 function ContainerTableProducts({
   dataProducts,
-  changeTableData,
+  setDataProducts,
 }: ContainerTableProductsProps) {
   const theme = useTheme();
 
@@ -32,24 +33,27 @@ function ContainerTableProducts({
     }
   }, [tableContainerRef]);
 
-  const handleClick = (event: React.MouseEvent, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: number[] = [];
+  const handleClick = useCallback(
+    (event: React.MouseEvent, id: number) => {
+      const selectedIndex = selected.indexOf(id);
+      let newSelected: number[] = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
-  };
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, id);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1),
+        );
+      }
+      setSelected(newSelected);
+    },
+    [selected],
+  );
 
   return (
     <>
@@ -131,8 +135,8 @@ function ContainerTableProducts({
           <TableBodyCustom
             selected={selected}
             dataProducts={dataProducts}
-            changeTableData={changeTableData}
             handleClick={handleClick}
+            setDataProducts={setDataProducts}
           />
         </Table>
       </TableContainer>

@@ -1,8 +1,10 @@
-import { Data } from '../../../../types/data.types';
+import { Dispatch } from 'react';
+
+import { Data } from '../../../../../../data/types/dataProduct.types';
 
 export interface TableBodyCustomProps {
   dataProducts: Data[];
   selected: number[];
   handleClick: (event: React.MouseEvent, id: number) => void;
-  changeTableData: (newData: Data[]) => void;
+  setDataProducts: Dispatch<Data[]>;
 }

@@ -1,25 +1,24 @@
 import { styled, TableBody as MuiTableBody } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
 
-import { Data } from '../../../types/data.types';
+import { keyStorageDataProducts } from '../../../../../constants/constants';
+import { Data } from '../../../../../data/types/dataProduct.types';
+import assignCellValue from '../../../../../helpers/assignCellValue';
+import useLocalStorageDataTable from '../../../../../hooks/useLocalStorageDataTable';
 import TableCellCustom from '../TableCellCustom/TableCellCustom';
 import TableRow from '../styled/StyledTableRow';
 import InputCell from './InputCell/InputCell';
 import { ParamsInputCell } from './InputCell/types/paramsInputCell.types';
+import { ValueInputCell } from './InputCell/types/valueInputCell.types';
 import { TableBodyCustomProps } from './types/tableBodyCustomProps.types';
 
 const TableBody = styled(MuiTableBody)(() => ({
   '& td': { color: 'black', fontWeight: 'bold' },
 }));
 
-export interface DefaultParamsInputCell {
-  name: '';
-  rowId: '';
-  id: '';
-  style: {};
-}
 const defaultValueInputCell = { start: '', new: '' };
-const defaultParamsInputCell: DefaultParamsInputCell = {
+const defaultParamsInputCell = {
+  dataType: '',
   name: '',
   rowId: '',
   id: '',
@@ -28,42 +27,21 @@ const defaultParamsInputCell: DefaultParamsInputCell = {
 
 function TableBodyCustom({
   dataProducts,
-  changeTableData,
   selected,
   handleClick,
+  setDataProducts,
 }: TableBodyCustomProps) {
-  const [valueInputCell, setValueInputCell] = useState(defaultValueInputCell);
+  const [valueInputCell, setValueInputCell] = useState<ValueInputCell>(
+    defaultValueInputCell,
+  );
+
   const [wasDoubleClickByCell, setWasDoubleClickByCell] = useState(false);
   const [sizeInputCell, setSizeInputCell] = useState({ width: 0 });
-
   const [paramsInputCell, setParamsInputCell] = useState<ParamsInputCell>(
     defaultParamsInputCell,
   );
 
-  // обработать даблклик
-  function handleOnDoubleClick(e: React.MouseEvent) {
-    const eventTarget = e.target as HTMLElement;
-    const textContent = eventTarget.textContent as string;
-    const clientWidthElement = eventTarget.clientWidth;
-    const cellName = eventTarget.dataset.cellname as string;
-    const rowId = eventTarget.dataset.rowid as string;
-    const currentCellStyle = window.getComputedStyle(eventTarget);
-
-    setValueInputCell({ start: textContent, new: textContent });
-    setSizeInputCell({
-      width: clientWidthElement,
-    });
-    setParamsInputCell({
-      name: cellName,
-      rowId: rowId,
-      style: {
-        padding: currentCellStyle.padding,
-        lineHeight: currentCellStyle.lineHeight,
-        fontSize: currentCellStyle.fontSize,
-        fontWeight: currentCellStyle.fontWeight,
-      },
-    });
-  }
+  const storage = useLocalStorageDataTable();
 
   useEffect(() => {
     if (sizeInputCell.width && paramsInputCell.rowId) {
@@ -76,10 +54,63 @@ function TableBodyCustom({
     setParamsInputCell(defaultParamsInputCell);
   }, []);
 
+  function handleOnKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setWasDoubleClickByCell(false);
+      handleSaveNewInputValue();
+    }
+  }
+
+  function handleSaveNewInputValue() {
+    const cellName = paramsInputCell.name as keyof Data;
+    const rowId = paramsInputCell.rowId;
+    const newValue = valueInputCell.new;
+
+    if (cellName && rowId && newValue) {
+      const updatedData = [...dataProducts];
+      const idChangingItem = updatedData.findIndex(
+        (item: Data) => item.id.toString() === rowId,
+      ); // находим id строки, в которой будем изменять значение
+
+      assignCellValue(updatedData[idChangingItem], cellName, newValue);
+      setDataProducts(updatedData);
+      storage.update(keyStorageDataProducts, updatedData);
+    }
+  }
+
+  // обработать даблклик
+  function handleOnDoubleClick(e: React.MouseEvent) {
+    const eventTarget = e.target as HTMLElement;
+    const textContent = eventTarget.textContent as string;
+    const clientWidthElement = eventTarget.clientWidth;
+    const dataType = eventTarget.dataset.dataType as string;
+    const cellName = eventTarget.dataset.cellname as string;
+    const rowId = eventTarget.dataset.rowid as string;
+    const currentCellStyle = window.getComputedStyle(eventTarget);
+
+    setValueInputCell({ start: textContent, new: textContent });
+    setSizeInputCell({
+      width: clientWidthElement,
+    });
+    setParamsInputCell({
+      dataType,
+      name: cellName,
+      rowId: rowId,
+      style: {
+        padding: currentCellStyle.padding,
+        lineHeight: currentCellStyle.lineHeight,
+        fontSize: currentCellStyle.fontSize,
+        fontWeight: currentCellStyle.fontWeight,
+      },
+    });
+  }
+
   return (
     <TableBody
       id='tableBodyProducts'
       onDoubleClick={handleOnDoubleClick}
+      onKeyDown={handleOnKeyDown}
     >
       {dataProducts.map((row: Data, id: number) => {
         const isItemSelected = selected.includes(row.id);
@@ -101,6 +132,7 @@ function TableBodyCustom({
               .map((key, id) => {
                 const cellId = `${key}${rowId}${id}`;
                 const cellName = key as keyof Data;
+
                 return (
                   <React.Fragment key={id}>
                     {/* если был даблклик + id текущей строки и id целевой ячейки совпадает с теми, что записались при даблклике на ячейку */}
@@ -109,16 +141,20 @@ function TableBodyCustom({
                     paramsInputCell.name === cellName ? (
                       <InputCell
                         autoFocus={true}
-                        defaultValue={valueInputCell.new}
                         style={paramsInputCell.style}
-                        dataProducts={dataProducts}
                         setValueInputCell={setValueInputCell}
                         valueInputCell={valueInputCell}
-                        changeTableData={changeTableData}
                         sizeInputCell={sizeInputCell}
                         setWasDoubleClickByCell={setWasDoubleClickByCell}
                         paramsInputCell={paramsInputCell}
                         resetStatesByDefault={resetStatesByDefault}
+                        dataType={
+                          cellName === 'barcode' ||
+                          cellName === 'product_quantity' ||
+                          cellName === 'price'
+                            ? 'number'
+                            : 'string'
+                        }
                       />
                     ) : (
                       <TableCellCustom

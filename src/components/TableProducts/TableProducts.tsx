@@ -2,10 +2,13 @@ import { styled } from '@mui/material/';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 
-import api from '../../api/api';
+import { keyStorageDataProducts } from '../../constants/constants';
+import fileDataProducts from '../../data/dataProducts.json';
+import { Data } from '../../data/types/dataProduct.types';
+import useLocalStorageDataTable from '../../hooks/useLocalStorageDataTable';
 import Preloader from '../Preloader/Preloader';
 import ContainerTableProducts from './ContainerTableProducts/ContainerTableProducts';
-import { Data } from './types/data.types';
+import { TableProductsProps } from './types/tableProductsProps.types';
 
 const CommonBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -21,34 +24,63 @@ const CommonBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export default function TableProducts() {
-  const [dataProducts, setDataProducts] = useState<Data[]>([]);
+export default function TableProducts({
+  isButtonLoadPressed,
+  setIsButtonLoadPressed,
+}: TableProductsProps) {
+  const [dataProducts, setDataProducts] = useState<Data[] | [] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const storage = useLocalStorageDataTable();
+
   useEffect(() => {
-    api
-      .getProductData()
-      .then((res) => setDataProducts(res.data))
-      .finally(() => setIsLoading(false));
+    const hasDataProductsInStorage = storage.checkFor(keyStorageDataProducts);
+    setIsLoading(true);
+
+    if (hasDataProductsInStorage) {
+      // есть ли данные в хранилище
+      setDataProducts(storage.get(keyStorageDataProducts));
+    }
   }, []);
 
-  function changeTableData(newData: Data[]) {
-    setDataProducts(newData);
-  }
+  // инициализация табличных данных товаров
+  useEffect(() => {
+    const hasDataProductsInStorage = storage.checkFor(keyStorageDataProducts);
+
+    if (isButtonLoadPressed) {
+      // если кнопка "Загрузить данные" нажата
+      setIsButtonLoadPressed(false);
+
+      if (!hasDataProductsInStorage) {
+        setDataProducts(fileDataProducts);
+        storage.add(keyStorageDataProducts, fileDataProducts);
+      }
+
+      if (hasDataProductsInStorage) {
+        setDataProducts(storage.get(keyStorageDataProducts));
+      }
+    }
+  }, [isButtonLoadPressed]);
+
+  useEffect(() => {
+    if (isLoading) setIsLoading(false);
+  }, [dataProducts]);
 
   return (
     <>
       <CommonBox>
         {isLoading ? (
           <Preloader />
-        ) : !isLoading && dataProducts.length === 0 ? (
+        ) : !isLoading &&
+          (dataProducts === null || dataProducts?.length === 0) ? (
           <p>Нет табличных данных</p>
         ) : (
           !isLoading &&
+          dataProducts !== null &&
           dataProducts.length > 0 && (
             <ContainerTableProducts
               dataProducts={dataProducts}
-              changeTableData={changeTableData}
+              setDataProducts={setDataProducts}
             />
           )
         )}

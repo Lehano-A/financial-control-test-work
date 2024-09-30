@@ -1,4 +1,4 @@
 export interface ValueInputCell {
-  start: string;
-  new: string;
+  start: string | number;
+  new: string | number;
 }
