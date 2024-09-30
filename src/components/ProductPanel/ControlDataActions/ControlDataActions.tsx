@@ -4,7 +4,8 @@ import RuleFolderIcon from '@mui/icons-material/RuleFolder';
 import { Button, Divider as MuiDivider, styled } from '@mui/material';
 
 import buttonActionMixin from '../../../mixins/buttonActionMixin';
-import { ButtonActionProps } from './buttonActionProps.types';
+import { ProductPanelProps } from '../types/productPanelProps.types';
+import { ButtonActionProps } from './types/buttonActionProps.types';
 
 const BoxButtonActions = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -52,16 +53,19 @@ const Divider = styled(MuiDivider)(() => ({
   opacity: '0.7',
 }));
 
-function ControlDataActions() {
+function ControlDataActions({ setIsButtonLoadPressed }: ProductPanelProps) {
+  function handleOnClickButtonLoad() {
+    setIsButtonLoadPressed(true);
+  }
   return (
     <BoxButtonActions>
       <div>
-        <ButtonAction disableRipple>
+        <ButtonAction onClick={handleOnClickButtonLoad}>
           <DriveFileMoveIcon />
           Загрузить данные из csv
         </ButtonAction>
 
-        <ButtonAction disableRipple>
+        <ButtonAction>
           <RuleFolderIcon />
           Изменить данные
         </ButtonAction>
@@ -76,7 +80,6 @@ function ControlDataActions() {
         <ButtonClear
           iconMargin='0 0 0 5px'
           svgFontSize='1.3rem'
-          disableRipple
         >
           Очистить <ClearIcon />
         </ButtonClear>

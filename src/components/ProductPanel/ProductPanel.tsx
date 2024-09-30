@@ -5,6 +5,7 @@ import ButtonExport from './TargetSelection/ButtonExport/ButtonExport';
 import ButtonForming from './TargetSelection/ButtonForming/ButtonForming';
 import TargetSelection from './TargetSelection/TargetSelection';
 import TitleSection from './TitleSection/TitleSection';
+import { ProductPanelProps } from './types/productPanelProps.types';
 
 const Header = styled('header')(() => ({
   display: 'flex',
@@ -26,7 +27,7 @@ const BoxActions = styled('div')(() => ({
   margin: '21px 0',
 }));
 
-function ProductPanel() {
+function ProductPanel({ ...rest }: ProductPanelProps) {
   return (
     <section>
       <Header>
@@ -40,7 +41,7 @@ function ProductPanel() {
       </BoxProductInfo>
 
       <BoxActions>
-        <ControlDataActions />
+        <ControlDataActions {...rest} />
       </BoxActions>
     </section>
   );

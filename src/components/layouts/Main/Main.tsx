@@ -1,23 +1,25 @@
 import { styled } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import api from '../../../api/api';
 import ProductPanel from '../../ProductPanel/ProductPanel';
 import TableProducts from '../../TableProducts/TableProducts';
-import { Data } from '../../TableProducts/types/data.types';
 
 const StyledMain = styled('main')(() => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  // alignItems: 'center'
 }));
 
 function Main() {
+  const [isButtonLoadPressed, setIsButtonLoadPressed] = useState(false);
+
   return (
     <StyledMain>
-      <ProductPanel />
-      <TableProducts />
+      <ProductPanel setIsButtonLoadPressed={setIsButtonLoadPressed} />
+      <TableProducts
+        isButtonLoadPressed={isButtonLoadPressed}
+        setIsButtonLoadPressed={setIsButtonLoadPressed}
+      />
     </StyledMain>
   );
 }
