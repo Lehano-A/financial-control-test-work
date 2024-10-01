@@ -14,11 +14,11 @@ const Header = styled('header')(() => ({
 }));
 
 const BoxProductInfo = styled('div')(() => ({
-  '& > :nth-of-type(1n)': {
-    marginTop: '7px',
+  '& > dl': {
+    marginBottom: '7px',
   },
 
-  '& > button:not(:last-child)': {
+  '& > :not(:last-child)': {
     marginRight: '5px',
   },
 }));
