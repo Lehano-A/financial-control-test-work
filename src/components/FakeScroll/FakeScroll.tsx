@@ -1,13 +1,15 @@
 import { Box, styled } from '@mui/material';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { defaultFakeThumbParams } from './contstants/constants';
 import handleOnMouseMove from './handlersRealScroll/handleOnMouseMove/handleOnMouseMove';
 import handleOnScroll from './handlersRealScroll/handleOnScroll/handleOnScroll';
 import checkForRealScroll from './helpers/checkForRealScroll';
+import getDependences from './helpers/getDependences';
 import getNumFromString from './helpers/getNumFromString';
 import { CalcedParamsFakeTrack } from './types/calcedParamsFakeTrack.types';
 import { FakeScrollProps } from './types/fakeScrollProps.types';
+import { ParamsMainBoxWithScroll } from './types/paramsMainBoxWithScroll.types';
 import { ThumbProps } from './types/thumbPropsTypes.types';
 import { TrackProps } from './types/trackProps.types';
 
@@ -21,33 +23,39 @@ const Track = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'style' &&
     prop !== 'typeScroll' &&
-    prop !== 'mainBoxWithRealScrollRef',
-})<TrackProps>(({ style, typeScroll, mainBoxWithRealScrollRef }) => {
+    prop !== 'paramsMainBoxWithScroll',
+})<TrackProps>(({ style, typeScroll, paramsMainBoxWithScroll }) => {
   const { width: incomingWidth, height: incomingHeight } = style.track.size;
 
-  if (mainBoxWithRealScrollRef?.current) {
-    const { scrollWidth, scrollHeight, offsetWidth, offsetHeight } =
-      mainBoxWithRealScrollRef.current;
+  let hasRealScroll;
+  const customWidth = getNumFromString(incomingWidth);
+  const customHeight = getNumFromString(incomingHeight);
 
-    const customWidth = getNumFromString(incomingWidth);
-    const customHeight = getNumFromString(incomingHeight);
+  if (typeScroll === 'horizontal') {
+    const { scrollWidth, offsetWidth } = paramsMainBoxWithScroll;
 
-    if (typeScroll === 'horizontal') {
-      const hasRealScroll = checkForRealScroll(scrollWidth, offsetWidth);
+    if (scrollWidth && offsetWidth) {
       const widthFakeTrack = (offsetWidth / 100) * customWidth;
+      hasRealScroll = checkForRealScroll(scrollWidth, offsetWidth);
+
       calcedParamsFakeTrack.width = widthFakeTrack;
       calcedParamsFakeTrack.height = customHeight;
-      calcedParamsFakeTrack.display = hasRealScroll ? 'flex' : 'none';
-    }
-
-    if (typeScroll === 'vertical') {
-      const hasRealScroll = checkForRealScroll(scrollHeight, offsetHeight);
-      const heightFakeTrack = (offsetHeight / 100) * customHeight;
-      calcedParamsFakeTrack.width = customWidth;
-      calcedParamsFakeTrack.height = heightFakeTrack;
-      calcedParamsFakeTrack.display = hasRealScroll ? 'flex' : 'none';
     }
   }
+
+  if (typeScroll === 'vertical') {
+    const { scrollHeight, offsetHeight } = paramsMainBoxWithScroll;
+
+    if (scrollHeight && offsetHeight) {
+      const heightFakeTrack = (offsetHeight / 100) * customHeight;
+      hasRealScroll = checkForRealScroll(scrollHeight, offsetHeight);
+
+      calcedParamsFakeTrack.width = customWidth;
+      calcedParamsFakeTrack.height = heightFakeTrack;
+    }
+  }
+
+  calcedParamsFakeTrack.display = hasRealScroll ? 'flex' : 'none';
 
   return {
     display: calcedParamsFakeTrack.display,
@@ -63,18 +71,18 @@ const Track = styled(Box, {
 const Thumb = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'style' &&
-    prop !== 'mainBoxWithRealScrollRef' &&
     prop !== 'typeScroll' &&
     prop !== 'xCoordFakeScroll' &&
-    prop !== 'yCoordFakeScroll',
+    prop !== 'yCoordFakeScroll' &&
+    prop !== 'paramsMainBoxWithScroll',
 })<ThumbProps>(({
   style,
-  mainBoxWithRealScrollRef,
+  paramsMainBoxWithScroll,
   typeScroll,
   xCoordFakeScroll,
   yCoordFakeScroll,
 }) => {
-  if (mainBoxWithRealScrollRef?.current) {
+  if (paramsMainBoxWithScroll) {
     const calcedParamsFakeThumb: CalcedParamsFakeTrack = {
       width: 0,
       height: 0,
@@ -82,16 +90,9 @@ const Thumb = styled(Box, {
     };
     const { width: incomingWidth, height: incomingHeight } = style.thumb.size;
 
-    const {
-      scrollWidth,
-      offsetWidth,
-      clientWidth,
-      scrollHeight,
-      offsetHeight,
-      clientHeight,
-    } = mainBoxWithRealScrollRef.current;
-
     if (typeScroll === 'horizontal') {
+      const { scrollWidth, offsetWidth, clientWidth } = paramsMainBoxWithScroll;
+
       const widthFakeTrack = calcedParamsFakeTrack.width;
       const minWidthThumb =
         offsetWidth - clientWidth || defaultFakeThumbParams.width; // ширина минимального фейкового "большого пальца"
@@ -110,6 +111,9 @@ const Thumb = styled(Box, {
     }
 
     if (typeScroll === 'vertical') {
+      const { scrollHeight, offsetHeight, clientHeight } =
+        paramsMainBoxWithScroll;
+
       const heightFakeTrack = calcedParamsFakeTrack.height;
       const minHeightThumb =
         offsetHeight - clientHeight || defaultFakeThumbParams.height; // высота минимального фейкового "большого пальца"
@@ -142,17 +146,67 @@ const Thumb = styled(Box, {
 });
 
 function FakeScroll({
-  typeScroll = 'vertical',
   style,
   mainBoxWithRealScrollRef, // контейнер содержащий контент со скроллом
-  setIsDraggingFakeScroll, // сеттер состояния текущей активности фэйк-скролла (необязательно)
+  setIsDraggingFakeScroll, // сеттер состояния текущей активности фэйк-скролла
+  typeScroll = 'vertical',
+  forceUpdate = null, // массив состояний, которые запустят принудительный ререндер (необязательно)
 }: FakeScrollProps) {
   const fakeTrackRef = useRef<HTMLDivElement>(null);
   const fakeThumbRef = useRef<HTMLDivElement>(null);
 
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [xCoordFakeScroll, setXCoordFakeScroll] = React.useState(0);
-  const [yCoordFakeScroll, setYCoordFakeScroll] = React.useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [xCoordFakeScroll, setXCoordFakeScroll] = useState(0);
+  const [yCoordFakeScroll, setYCoordFakeScroll] = useState(0);
+  const [paramsMainBoxWithScroll, setParamsMainBoxWithScroll] =
+    useState<ParamsMainBoxWithScroll>({
+      scrollWidth: 0,
+      offsetWidth: 0,
+      clientWidth: 0,
+      scrollHeight: 0,
+      offsetHeight: 0,
+      clientHeight: 0,
+    });
+
+  useEffect(() => {
+    if (mainBoxWithRealScrollRef.current) {
+      const {
+        scrollWidth,
+        offsetWidth,
+        clientWidth,
+        scrollHeight,
+        offsetHeight,
+        clientHeight,
+      } = mainBoxWithRealScrollRef.current;
+
+      setParamsMainBoxWithScroll({
+        scrollWidth,
+        offsetWidth,
+        clientWidth,
+        scrollHeight,
+        offsetHeight,
+        clientHeight,
+      });
+    }
+  }, [...getDependences(forceUpdate)]);
+
+  useEffect(() => {
+    const refMainBoxWithRealScroll = mainBoxWithRealScrollRef.current;
+
+    if (refMainBoxWithRealScroll) {
+      refMainBoxWithRealScroll.addEventListener('scroll', scrollHandler); // добавляем слушатель события scroll
+    }
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      if (refMainBoxWithRealScroll) {
+        refMainBoxWithRealScroll.removeEventListener('scroll', scrollHandler);
+      }
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
 
   const scrollHandler = useCallback(() => {
     handleOnScroll({
@@ -191,39 +245,20 @@ function FakeScroll({
     if (setIsDraggingFakeScroll) setIsDraggingFakeScroll(false);
   }
 
-  useEffect(() => {
-    const refMainBoxWithRealScroll = mainBoxWithRealScrollRef.current;
-
-    if (refMainBoxWithRealScroll) {
-      refMainBoxWithRealScroll.addEventListener('scroll', scrollHandler); // Добавляем слушатель события scroll
-    }
-
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      if (refMainBoxWithRealScroll) {
-        refMainBoxWithRealScroll.removeEventListener('scroll', scrollHandler);
-      }
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
-
   return (
     <Track
+      paramsMainBoxWithScroll={paramsMainBoxWithScroll}
       ref={fakeTrackRef}
       style={style}
       typeScroll={typeScroll}
-      mainBoxWithRealScrollRef={mainBoxWithRealScrollRef}
     >
       <Thumb
+        paramsMainBoxWithScroll={paramsMainBoxWithScroll}
         ref={fakeThumbRef}
         style={style}
         typeScroll={typeScroll}
         xCoordFakeScroll={xCoordFakeScroll}
         yCoordFakeScroll={yCoordFakeScroll}
-        mainBoxWithRealScrollRef={mainBoxWithRealScrollRef}
         onMouseDown={handleMouseDown}
       />
     </Track>

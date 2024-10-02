@@ -11,7 +11,8 @@ export interface FakeScrollProps {
       custom?: { [key: string]: string | number | FakeScrollProps };
     };
   };
-  typeScroll?: string;
   mainBoxWithRealScrollRef: RefObject<HTMLDivElement>;
+  forceUpdate?: any;
+  typeScroll?: string;
   setIsDraggingFakeScroll?: Dispatch<boolean>;
 }
