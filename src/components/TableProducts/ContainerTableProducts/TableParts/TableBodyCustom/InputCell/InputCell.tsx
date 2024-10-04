@@ -1,23 +1,34 @@
 import { styled } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
+import getBorderStyleTableCell from '../../../../../../helpers/getBorderStyleTableCell';
+import validateValue from '../../../../../../helpers/validateValue';
 import { InputCellProps } from './types/inputCellProps.types';
 import { StyledInputProps } from './types/styledInputProps.types';
 import { ValueInputCell } from './types/valueInputCell.types';
 
-const StyledTd = styled('td')(() => ({
-  textAlign: 'left',
-}));
+const StyledTd = styled('td')(({ theme }) => {
+  const border = getBorderStyleTableCell(theme.palette.common.white);
 
-const StyledInput = styled('input')<StyledInputProps>(
-  ({ theme, style, sizeInputCell, isValidationError }) => ({
-    display: 'table-cell',
+  return {
     textAlign: 'left',
-    width: `${sizeInputCell.width}px`,
+    borderRight: border,
+    borderBottom: border,
+  };
+});
+
+const StyledInput = styled('input')<StyledInputProps>(({
+  theme,
+  style,
+  isValidationError,
+}) => {
+  return {
+    textAlign: 'left',
     outline: 'none',
     border: 'none',
     color: theme.palette.accent.main,
     animation: isValidationError ? `changeBgColor 0.5s linear` : 'none',
+    backgroundColor: 'transparent',
 
     '@keyframes changeBgColor': {
       '0%': {
@@ -28,19 +39,21 @@ const StyledInput = styled('input')<StyledInputProps>(
       },
     },
     ...style,
-  }),
-);
+  };
+});
 
 function InputCell({
   autoFocus,
   style,
   setValueInputCell,
   valueInputCell,
-  sizeInputCell,
+  isDraggingFakeScroll,
   setWasDoubleClickByCell,
   resetStatesByDefault,
   dataType,
 }: InputCellProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [isValidationError, setIsValidationError] = useState(false);
 
   // обработать изменение поля ввода
@@ -51,15 +64,7 @@ function InputCell({
 
     if (dataType === 'number') {
       if (Number.isNaN(Number(newValue))) {
-        if (!isValidationError) setIsValidationError(true);
-
-        if (isValidationError) {
-          setIsValidationError(false);
-          setTimeout(() => {
-            setIsValidationError(true);
-          }, 0); // немедленно перезапускаем анимацию
-        }
-        return;
+        return validateValue({ isValidationError, setIsValidationError });
       }
     }
 
@@ -72,20 +77,35 @@ function InputCell({
 
   // обработать потерю фокуса поля ввода
   function handleOnBlur() {
-    setValueInputCell({ start: valueInputCell.start, new: valueInputCell.new });
-    setIsValidationError(false);
-    setWasDoubleClickByCell(false);
-    resetStatesByDefault();
+    // если нет перетаскивания скролла
+    if (!isDraggingFakeScroll) {
+      setValueInputCell({
+        start: valueInputCell.start,
+        new: valueInputCell.new,
+      });
+      setIsValidationError(false);
+      setWasDoubleClickByCell(false);
+      resetStatesByDefault();
+      return;
+    }
+
+    // если есть перетаскивание, тогда фокусируемся на инпуте
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }
 
+  // обработать завершение анимации
   function handleAnimationEnd() {
     if (isValidationError) setIsValidationError(false);
   }
+
   return (
     <StyledTd>
       <StyledInput
+        ref={inputRef}
+        size={String(valueInputCell.new).length}
         autoFocus={autoFocus}
-        sizeInputCell={sizeInputCell}
         style={style}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
