@@ -1,17 +1,15 @@
 import { Table, TableContainer, useTheme } from '@mui/material';
-import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Data } from '../../../data/types/dataProduct.types';
 import FakeScroll from '../../FakeScroll/FakeScroll';
+import { ValueInputCell } from './TableParts/TableBodyCustom/InputCell/types/valueInputCell.types';
 import TableBodyCustom from './TableParts/TableBodyCustom/TableBodyCustom';
+import TableFooterCustom from './TableParts/TableFooterCustom/TableFooterCustom';
 import TableHeadCustom from './TableParts/TableHeadCustom/TableHeadCustom';
 import { Order } from './TableParts/TableHeadCustom/types/tableHeadCustomProps.types';
+import { ContainerTableProductsProps } from './types/containerTableProductsProps.types';
 
-interface ContainerTableProductsProps {
-  dataProducts: Data[];
-
-  setDataProducts: Dispatch<Data[]>;
-}
+export const defaultValueInputCell = { start: '', new: '' };
 
 function ContainerTableProducts({
   dataProducts,
@@ -21,11 +19,16 @@ function ContainerTableProducts({
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  const [isDraggingFakeScroll, setIsDraggingFakeScroll] = useState(false);
-  const [isDisplayedFakeScroll, setIsDisplayedFakeScroll] = useState(false);
+  const [valueInputCell, setValueInputCell] = useState<ValueInputCell>(
+    defaultValueInputCell,
+  );
+
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState<number[]>([]);
+  const [wasDoubleClickByCell, setWasDoubleClickByCell] = useState(false);
+  const [isDraggingFakeScroll, setIsDraggingFakeScroll] = useState(false);
+  const [isDisplayedFakeScroll, setIsDisplayedFakeScroll] = useState(false);
 
   useEffect(() => {
     if (tableContainerRef) {
@@ -60,6 +63,7 @@ function ContainerTableProducts({
       {isDisplayedFakeScroll && (
         <FakeScroll
           typeScroll='horizontal'
+          forceUpdate={[wasDoubleClickByCell, valueInputCell.new]}
           mainBoxWithRealScrollRef={tableContainerRef}
           setIsDraggingFakeScroll={setIsDraggingFakeScroll}
           style={{
@@ -113,7 +117,7 @@ function ContainerTableProducts({
       )}
       <TableContainer
         ref={tableContainerRef}
-        id='tc'
+        id='tableContainer'
         sx={{
           maxHeight: '400px',
           userSelect: isDraggingFakeScroll ? 'none' : 'auto',
@@ -121,10 +125,8 @@ function ContainerTableProducts({
         className='scroll-wrapper'
       >
         <Table
-          id='tableProduct'
           aria-label='sticky table'
           stickyHeader
-          sx={{ paddingTop: '5px' }}
         >
           <TableHeadCustom
             order={order}
@@ -133,11 +135,18 @@ function ContainerTableProducts({
           />
 
           <TableBodyCustom
+            valueInputCell={valueInputCell}
+            setValueInputCell={setValueInputCell}
+            wasDoubleClickByCell={wasDoubleClickByCell}
+            setWasDoubleClickByCell={setWasDoubleClickByCell}
             selected={selected}
             dataProducts={dataProducts}
             handleClick={handleClick}
             setDataProducts={setDataProducts}
+            isDraggingFakeScroll={isDraggingFakeScroll}
           />
+
+          <TableFooterCustom dataProducts={dataProducts} />
         </Table>
       </TableContainer>
     </>

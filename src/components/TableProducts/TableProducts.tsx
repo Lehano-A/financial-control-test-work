@@ -14,11 +14,12 @@ const CommonBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   width: '100%',
+  maxWidth: '1000px',
   position: 'relative',
   padding: '15px 5px 10px 15px',
   backgroundColor: theme.palette.common.white,
 
-  '& #tc::-webkit-scrollbar': {
+  '& #tableContainer::-webkit-scrollbar': {
     height: 0,
     width: 0,
   },
@@ -30,7 +31,6 @@ export default function TableProducts({
 }: TableProductsProps) {
   const [dataProducts, setDataProducts] = useState<Data[] | [] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   const storage = useLocalStorageDataTable();
 
   useEffect(() => {

@@ -1,22 +1,21 @@
 import { styled, TableBody as MuiTableBody } from '@mui/material';
-import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useCallback, useState } from 'react';
 
 import { keyStorageDataProducts } from '../../../../../constants/constants';
 import { Data } from '../../../../../data/types/dataProduct.types';
 import assignCellValue from '../../../../../helpers/assignCellValue';
 import useLocalStorageDataTable from '../../../../../hooks/useLocalStorageDataTable';
+import { defaultValueInputCell } from '../../ContainerTableProducts';
 import TableCellCustom from '../TableCellCustom/TableCellCustom';
 import TableRow from '../styled/StyledTableRow';
 import InputCell from './InputCell/InputCell';
 import { ParamsInputCell } from './InputCell/types/paramsInputCell.types';
-import { ValueInputCell } from './InputCell/types/valueInputCell.types';
 import { TableBodyCustomProps } from './types/tableBodyCustomProps.types';
 
 const TableBody = styled(MuiTableBody)(() => ({
   '& td': { color: 'black', fontWeight: 'bold' },
 }));
 
-const defaultValueInputCell = { start: '', new: '' };
 const defaultParamsInputCell = {
   dataType: '',
   name: '',
@@ -30,30 +29,24 @@ function TableBodyCustom({
   selected,
   handleClick,
   setDataProducts,
+  valueInputCell,
+  setValueInputCell,
+  isDraggingFakeScroll,
+  wasDoubleClickByCell,
+  setWasDoubleClickByCell,
 }: TableBodyCustomProps) {
-  const [valueInputCell, setValueInputCell] = useState<ValueInputCell>(
-    defaultValueInputCell,
-  );
-
-  const [wasDoubleClickByCell, setWasDoubleClickByCell] = useState(false);
-  const [sizeInputCell, setSizeInputCell] = useState({ width: 0 });
   const [paramsInputCell, setParamsInputCell] = useState<ParamsInputCell>(
     defaultParamsInputCell,
   );
 
   const storage = useLocalStorageDataTable();
 
-  useEffect(() => {
-    if (sizeInputCell.width && paramsInputCell.rowId) {
-      setWasDoubleClickByCell(true);
-    }
-  }, [sizeInputCell, paramsInputCell.rowId]);
-
   const resetStatesByDefault = useCallback(() => {
     setValueInputCell(defaultValueInputCell);
     setParamsInputCell(defaultParamsInputCell);
   }, []);
 
+  // обработать нажатие "Enter"
   function handleOnKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -62,10 +55,14 @@ function TableBodyCustom({
     }
   }
 
+  // обработать сохранение нового вводного значения
   function handleSaveNewInputValue() {
     const cellName = paramsInputCell.name as keyof Data;
     const rowId = paramsInputCell.rowId;
-    const newValue = valueInputCell.new;
+    const newValue =
+      typeof valueInputCell.new === 'string'
+        ? valueInputCell.new.trim()
+        : valueInputCell.new;
 
     if (cellName && rowId && newValue) {
       const updatedData = [...dataProducts];
@@ -83,16 +80,13 @@ function TableBodyCustom({
   function handleOnDoubleClick(e: React.MouseEvent) {
     const eventTarget = e.target as HTMLElement;
     const textContent = eventTarget.textContent as string;
-    const clientWidthElement = eventTarget.clientWidth;
     const dataType = eventTarget.dataset.dataType as string;
     const cellName = eventTarget.dataset.cellname as string;
     const rowId = eventTarget.dataset.rowid as string;
     const currentCellStyle = window.getComputedStyle(eventTarget);
 
+    setWasDoubleClickByCell(true);
     setValueInputCell({ start: textContent, new: textContent });
-    setSizeInputCell({
-      width: clientWidthElement,
-    });
     setParamsInputCell({
       dataType,
       name: cellName,
@@ -129,12 +123,12 @@ function TableBodyCustom({
           >
             {Object.keys(row)
               .slice(1)
-              .map((key, id) => {
-                const cellId = `${key}${rowId}${id}`;
+              .map((key, keyId) => {
+                const cellId = `${key}${rowId}${keyId}`;
                 const cellName = key as keyof Data;
 
                 return (
-                  <React.Fragment key={id}>
+                  <React.Fragment key={keyId}>
                     {/* если был даблклик + id текущей строки и id целевой ячейки совпадает с теми, что записались при даблклике на ячейку */}
                     {wasDoubleClickByCell &&
                     paramsInputCell.rowId === rowId &&
@@ -144,7 +138,7 @@ function TableBodyCustom({
                         style={paramsInputCell.style}
                         setValueInputCell={setValueInputCell}
                         valueInputCell={valueInputCell}
-                        sizeInputCell={sizeInputCell}
+                        isDraggingFakeScroll={isDraggingFakeScroll}
                         setWasDoubleClickByCell={setWasDoubleClickByCell}
                         paramsInputCell={paramsInputCell}
                         resetStatesByDefault={resetStatesByDefault}

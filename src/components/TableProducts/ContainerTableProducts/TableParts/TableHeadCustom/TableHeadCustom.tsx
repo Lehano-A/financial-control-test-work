@@ -12,22 +12,25 @@ const headCells: readonly HeadCell[] = [
     id: 'barcode',
     label: 'Баркод',
   },
+
   {
     dataType: 'string',
-    id: 'productBrand',
+    id: 'product_brand',
     label: 'Бренд',
   },
+
   {
     dataType: 'string',
-    id: 'productName',
+    id: 'product_name',
     label: 'Название товара',
   },
 
   {
     dataType: 'number',
-    id: 'productQuantity',
+    id: 'product_quantity',
     label: 'Кол-во товара',
   },
+
   {
     dataType: 'number',
     id: 'price',
@@ -44,22 +47,10 @@ function TableHeadCustom(props: TableHeadCustomProps) {
   return (
     <TableHead id='tableHeadProducts'>
       <TableRow>
-        {/* <TableCell padding='checkbox'> */}
-        {/* <Checkbox
-            color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          /> */}
-        {/* </TableCell> */}
         {headCells.map((headCell, id) => (
           <TableCell
             key={id}
             data-type={headCell.dataType}
-            // align={headCell.numeric ? 'right' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
