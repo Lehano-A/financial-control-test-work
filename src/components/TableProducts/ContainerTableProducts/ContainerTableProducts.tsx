@@ -24,7 +24,6 @@ function ContainerTableProducts({
   );
 
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState<number[]>([]);
   const [wasDoubleClickByCell, setWasDoubleClickByCell] = useState(false);
   const [isDraggingFakeScroll, setIsDraggingFakeScroll] = useState(false);
@@ -130,20 +129,20 @@ function ContainerTableProducts({
         >
           <TableHeadCustom
             order={order}
-            orderBy={orderBy}
-            onRequestSort={() => {}}
+            setOrder={setOrder}
+            setDataProducts={setDataProducts}
           />
 
           <TableBodyCustom
+            selected={selected}
+            handleClick={handleClick}
+            dataProducts={dataProducts}
             valueInputCell={valueInputCell}
+            setDataProducts={setDataProducts}
             setValueInputCell={setValueInputCell}
+            isDraggingFakeScroll={isDraggingFakeScroll}
             wasDoubleClickByCell={wasDoubleClickByCell}
             setWasDoubleClickByCell={setWasDoubleClickByCell}
-            selected={selected}
-            dataProducts={dataProducts}
-            handleClick={handleClick}
-            setDataProducts={setDataProducts}
-            isDraggingFakeScroll={isDraggingFakeScroll}
           />
 
           <TableFooterCustom dataProducts={dataProducts} />

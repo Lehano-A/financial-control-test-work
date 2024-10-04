@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
 
+import { Data } from '../../../../../../data/types/dataProduct.types';
 import { DataProducts } from '../../../../types/dataProducts.types';
 
-export type Order = 'asc' | 'desc';
-
-export interface TableHeadCustomProps {
-  order: Order;
-  setOrder: Dispatch<SetStateAction<Order>>;
+export interface SortColumn {
+  columnId: keyof Data;
+  columnType: string;
+  order: string;
   setDataProducts: Dispatch<SetStateAction<DataProducts>>;
 }

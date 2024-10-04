@@ -1,6 +1,7 @@
-import { Box, TableHead, TableSortLabel } from '@mui/material';
-import { visuallyHidden } from '@mui/utils';
+import { TableHead, TableSortLabel } from '@mui/material';
 
+import { Data } from '../../../../../data/types/dataProduct.types';
+import sortColumn from '../../../../../helpers/sortColumn';
 import TableCell from '../styled/StyledTableCell';
 import TableRow from '../styled/StyledTableRow';
 import { HeadCell } from './types/headCell.types';
@@ -38,38 +39,56 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-function TableHeadCustom(props: TableHeadCustomProps) {
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: string) => (event: React.MouseEvent) => {
-    onRequestSort(event, property);
-  };
+function TableHeadCustom({
+  order,
+  setOrder,
+  setDataProducts,
+}: TableHeadCustomProps) {
+  // обработать сортировку
+  function handleSort(e: React.MouseEvent) {
+    const targetCell = e.currentTarget as HTMLElement;
+    const parentElement = targetCell.parentElement;
+
+    if (parentElement) {
+      console.dir('targetCell', targetCell);
+      const columnId = parentElement.dataset.id as keyof Data;
+      const columnType = parentElement.dataset.type;
+      console.log(
+        'columnId: ',
+        columnId,
+        'columnType: ',
+        columnType,
+        'order: ',
+        order,
+      );
+
+      if (columnType) {
+        sortColumn({ columnId, columnType, order, setDataProducts });
+      }
+
+      setOrder((prevState) => (prevState === 'asc' ? 'desc' : 'asc'));
+    }
+  }
 
   return (
     <TableHead id='tableHeadProducts'>
       <TableRow>
-        {headCells.map((headCell, id) => (
-          <TableCell
-            key={id}
-            data-type={headCell.dataType}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+        {headCells.map((headCell, id) => {
+          return (
+            <TableCell
+              key={id}
+              data-id={headCell.id}
+              data-type={headCell.dataType}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box
-                  component='span'
-                  sx={visuallyHidden}
-                >
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+              <TableSortLabel
+                direction={order}
+                onClick={handleSort}
+              >
+                {headCell.label}
+              </TableSortLabel>
+            </TableCell>
+          );
+        })}
       </TableRow>
     </TableHead>
   );

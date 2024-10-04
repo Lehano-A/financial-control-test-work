@@ -8,6 +8,7 @@ import { Data } from '../../data/types/dataProduct.types';
 import useLocalStorageDataTable from '../../hooks/useLocalStorageDataTable';
 import Preloader from '../Preloader/Preloader';
 import ContainerTableProducts from './ContainerTableProducts/ContainerTableProducts';
+import { DataProducts } from './types/dataProducts.types';
 import { TableProductsProps } from './types/tableProductsProps.types';
 
 const CommonBox = styled(Box)(({ theme }) => ({
@@ -29,7 +30,7 @@ export default function TableProducts({
   isButtonLoadPressed,
   setIsButtonLoadPressed,
 }: TableProductsProps) {
-  const [dataProducts, setDataProducts] = useState<Data[] | [] | null>(null);
+  const [dataProducts, setDataProducts] = useState<DataProducts>(null);
   const [isLoading, setIsLoading] = useState(true);
   const storage = useLocalStorageDataTable();
 
