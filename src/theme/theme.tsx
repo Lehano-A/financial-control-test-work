@@ -17,7 +17,7 @@ const palette = {
   },
 
   secondary: { main: '#297fff', light: '#eef5ff' },
-  accent: { main: '#ff6b19' },
+  accent: { main: '#ff6b19', light: '#fff8f4' },
   bg: { main: '#eff1f3' },
 
   shades: {
