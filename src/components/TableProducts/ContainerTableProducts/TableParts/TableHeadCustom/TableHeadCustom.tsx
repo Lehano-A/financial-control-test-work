@@ -52,14 +52,6 @@ function TableHeadCustom({
     if (parentElement) {
       const columnId = parentElement.dataset.id as keyof Data;
       const columnType = parentElement.dataset.type;
-      console.log(
-        'columnId: ',
-        columnId,
-        'columnType: ',
-        columnType,
-        'order: ',
-        order,
-      );
 
       if (columnType) {
         sortColumn({ columnId, columnType, order, setDataProducts });
