@@ -1,5 +1,5 @@
 import { Table, TableContainer, useTheme } from '@mui/material';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import FakeScroll from '../../FakeScroll/FakeScroll';
 import { ValueInputCell } from './TableParts/TableBodyCustom/InputCell/types/valueInputCell.types';
@@ -19,43 +19,19 @@ function ContainerTableProducts({
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  const [valueInputCell, setValueInputCell] = useState<ValueInputCell>(
-    defaultValueInputCell,
-  );
-
   const [order, setOrder] = useState<Order>('asc');
-  const [selected, setSelected] = useState<number[]>([]);
   const [wasDoubleClickByCell, setWasDoubleClickByCell] = useState(false);
   const [isDraggingFakeScroll, setIsDraggingFakeScroll] = useState(false);
   const [isDisplayedFakeScroll, setIsDisplayedFakeScroll] = useState(false);
+  const [valueInputCell, setValueInputCell] = useState<ValueInputCell>(
+    defaultValueInputCell,
+  );
 
   useEffect(() => {
     if (tableContainerRef) {
       setIsDisplayedFakeScroll(true);
     }
   }, [tableContainerRef]);
-
-  const handleClick = useCallback(
-    (event: React.MouseEvent, id: number) => {
-      const selectedIndex = selected.indexOf(id);
-      let newSelected: number[] = [];
-
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, id);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1),
-        );
-      }
-      setSelected(newSelected);
-    },
-    [selected],
-  );
 
   return (
     <>
@@ -134,13 +110,10 @@ function ContainerTableProducts({
           />
 
           <TableBodyCustom
-            selected={selected}
-            handleClick={handleClick}
             dataProducts={dataProducts}
             valueInputCell={valueInputCell}
             setDataProducts={setDataProducts}
             setValueInputCell={setValueInputCell}
-            isDraggingFakeScroll={isDraggingFakeScroll}
             wasDoubleClickByCell={wasDoubleClickByCell}
             setWasDoubleClickByCell={setWasDoubleClickByCell}
           />

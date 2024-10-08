@@ -50,7 +50,6 @@ function TableHeadCustom({
     const parentElement = targetCell.parentElement;
 
     if (parentElement) {
-      console.dir('targetCell', targetCell);
       const columnId = parentElement.dataset.id as keyof Data;
       const columnType = parentElement.dataset.type;
       console.log(
@@ -76,9 +75,10 @@ function TableHeadCustom({
         {headCells.map((headCell, id) => {
           return (
             <TableCell
-              key={id}
+              key={headCell.id}
               data-id={headCell.id}
               data-type={headCell.dataType}
+              position='sticky'
             >
               <TableSortLabel
                 direction={order}

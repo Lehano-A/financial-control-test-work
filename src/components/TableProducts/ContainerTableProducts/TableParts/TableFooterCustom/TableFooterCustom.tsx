@@ -12,6 +12,7 @@ const TableFooter = styled(MuiTableFooter)(() => ({
   bottom: 0,
   left: 0,
   width: '100%',
+  zIndex: 2,
 }));
 
 const TableRow = styled(StyledTableRow)(() => ({
@@ -83,6 +84,7 @@ function TableFooterCustom({ dataProducts }: TableFooterCustomProps) {
               <TableCellCustom
                 key={key}
                 cellName={cellName}
+                currentValue={value}
               >
                 {value}
               </TableCellCustom>

@@ -1,14 +1,13 @@
 import { styled, TableBody as MuiTableBody } from '@mui/material';
-import React, { KeyboardEvent, useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { keyStorageDataProducts } from '../../../../../constants/constants';
 import { Data } from '../../../../../data/types/dataProduct.types';
 import assignCellValue from '../../../../../helpers/assignCellValue';
+import findIndexItemDataProducts from '../../../../../helpers/findIndexItemDataProducts';
 import useLocalStorageDataTable from '../../../../../hooks/useLocalStorageDataTable';
 import { defaultValueInputCell } from '../../ContainerTableProducts';
-import TableCellCustom from '../TableCellCustom/TableCellCustom';
-import TableRow from '../styled/StyledTableRow';
-import InputCell from './InputCell/InputCell';
+import TableRowCustom from '../TableRowCustom/TableRowCustom';
 import { ParamsInputCell } from './InputCell/types/paramsInputCell.types';
 import { TableBodyCustomProps } from './types/tableBodyCustomProps.types';
 
@@ -18,155 +17,125 @@ const TableBody = styled(MuiTableBody)(() => ({
 
 const defaultParamsInputCell = {
   dataType: '',
-  name: '',
+  cellName: '',
   rowId: '',
   id: '',
   style: {},
 };
 
-function TableBodyCustom({
-  dataProducts,
-  selected,
-  handleClick,
-  setDataProducts,
-  valueInputCell,
-  setValueInputCell,
-  isDraggingFakeScroll,
-  wasDoubleClickByCell,
-  setWasDoubleClickByCell,
-}: TableBodyCustomProps) {
-  const [paramsInputCell, setParamsInputCell] = useState<ParamsInputCell>(
-    defaultParamsInputCell,
-  );
+const TableBodyCustom = React.memo(
+  ({
+    dataProducts,
+    setDataProducts,
+    valueInputCell,
+    setValueInputCell,
+    wasDoubleClickByCell,
+    setWasDoubleClickByCell,
+  }: TableBodyCustomProps) => {
+    const [paramsInputCell, setParamsInputCell] = useState<ParamsInputCell>(
+      defaultParamsInputCell,
+    );
 
-  const storage = useLocalStorageDataTable();
+    const storage = useLocalStorageDataTable();
 
-  const resetStatesByDefault = useCallback(() => {
-    setValueInputCell(defaultValueInputCell);
-    setParamsInputCell(defaultParamsInputCell);
-  }, []);
-
-  // обработать нажатие "Enter"
-  function handleOnKeyDown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      setWasDoubleClickByCell(false);
+    // сохраняем значение при его редактировании
+    useEffect(() => {
       handleSaveNewInputValue();
-    }
-  }
+    }, [valueInputCell.new]);
 
-  // обработать сохранение нового вводного значения
-  function handleSaveNewInputValue() {
-    const cellName = paramsInputCell.name as keyof Data;
-    const rowId = paramsInputCell.rowId;
-    const newValue =
-      typeof valueInputCell.new === 'string'
-        ? valueInputCell.new.trim()
-        : valueInputCell.new;
+    const resetStatesByDefault = useCallback(() => {
+      setValueInputCell(defaultValueInputCell);
+      setParamsInputCell(defaultParamsInputCell);
+    }, []);
 
-    if (cellName && rowId && newValue) {
-      const updatedData = [...dataProducts];
-      const idChangingItem = updatedData.findIndex(
-        (item: Data) => item.id.toString() === rowId,
-      ); // находим id строки, в которой будем изменять значение
+    // обработать сохранение нового вводного значения
+    const handleSaveNewInputValue = useCallback(() => {
+      const cellName = paramsInputCell.cellName as keyof Data;
+      const rowId = paramsInputCell.rowId;
+      const newValue =
+        typeof valueInputCell.new === 'string'
+          ? valueInputCell.new.trim()
+          : valueInputCell.new;
+      if (cellName && rowId && newValue) {
+        updateDataProducts(rowId, cellName, newValue);
+        updateItemDataProductsInStorage(rowId, cellName, newValue);
+      }
+    }, [valueInputCell.new]);
 
-      assignCellValue(updatedData[idChangingItem], cellName, newValue);
-      setDataProducts(updatedData);
-      storage.update(keyStorageDataProducts, updatedData);
-    }
-  }
+    // обновить данные товаров (обновление текущего состояния)
+    const updateDataProducts = useCallback(
+      (rowId: string, cellName: keyof Data, newValue: string | number) => {
+        const updatedData = [...dataProducts];
+        const idChangingItem = findIndexItemDataProducts(updatedData, rowId);
 
-  // обработать даблклик
-  function handleOnDoubleClick(e: React.MouseEvent) {
-    const eventTarget = e.target as HTMLElement;
-    const textContent = eventTarget.textContent as string;
-    const dataType = eventTarget.dataset.dataType as string;
-    const cellName = eventTarget.dataset.cellname as string;
-    const rowId = eventTarget.dataset.rowid as string;
-    const currentCellStyle = window.getComputedStyle(eventTarget);
-
-    setWasDoubleClickByCell(true);
-    setValueInputCell({ start: textContent, new: textContent });
-    setParamsInputCell({
-      dataType,
-      name: cellName,
-      rowId: rowId,
-      style: {
-        padding: currentCellStyle.padding,
-        lineHeight: currentCellStyle.lineHeight,
-        fontSize: currentCellStyle.fontSize,
-        fontWeight: currentCellStyle.fontWeight,
+        assignCellValue(updatedData[idChangingItem], cellName, newValue);
+        setDataProducts(updatedData);
       },
-    });
-  }
+      [valueInputCell.new],
+    );
 
-  return (
-    <TableBody
-      id='tableBodyProducts'
-      onDoubleClick={handleOnDoubleClick}
-      onKeyDown={handleOnKeyDown}
-    >
-      {dataProducts.map((row: Data, id: number) => {
-        const isItemSelected = selected.includes(row.id);
-        const rowId = row.id.toString();
+    // обновить ЭЛЕМЕНТ в данных товаров в хранилище
+    const updateItemDataProductsInStorage = useCallback(
+      (rowId: string, cellName: keyof Data, newValue: string | number) => {
+        const dataFromStorage = storage.get(keyStorageDataProducts);
+        const idItemInStorage = findIndexItemDataProducts(
+          dataFromStorage,
+          rowId,
+        ); // находим id строки из хранилища, в которой будем изменять значение (в хранилище данные всегда по дефолту)
 
-        return (
-          <TableRow
-            hover
-            onClick={(event) => handleClick(event, row.id)}
-            role='checkbox'
-            aria-checked={isItemSelected}
-            tabIndex={-1}
-            key={`aaa${id}`}
-            selected={isItemSelected}
-            sx={{ cursor: 'pointer' }}
-          >
-            {Object.keys(row)
-              .slice(1)
-              .map((key, keyId) => {
-                const cellId = `${key}${rowId}${keyId}`;
-                const cellName = key as keyof Data;
+        dataFromStorage[idItemInStorage][cellName] = newValue;
+        storage.update(keyStorageDataProducts, dataFromStorage);
+      },
+      [valueInputCell.new],
+    );
 
-                return (
-                  <React.Fragment key={keyId}>
-                    {/* если был даблклик + id текущей строки и id целевой ячейки совпадает с теми, что записались при даблклике на ячейку */}
-                    {wasDoubleClickByCell &&
-                    paramsInputCell.rowId === rowId &&
-                    paramsInputCell.name === cellName ? (
-                      <InputCell
-                        autoFocus={true}
-                        style={paramsInputCell.style}
-                        setValueInputCell={setValueInputCell}
-                        valueInputCell={valueInputCell}
-                        isDraggingFakeScroll={isDraggingFakeScroll}
-                        setWasDoubleClickByCell={setWasDoubleClickByCell}
-                        paramsInputCell={paramsInputCell}
-                        resetStatesByDefault={resetStatesByDefault}
-                        dataType={
-                          cellName === 'barcode' ||
-                          cellName === 'product_quantity' ||
-                          cellName === 'price'
-                            ? 'number'
-                            : 'string'
-                        }
-                      />
-                    ) : (
-                      <TableCellCustom
-                        rowId={rowId}
-                        cellId={cellId}
-                        cellName={cellName}
-                      >
-                        {row[cellName]}
-                      </TableCellCustom>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-          </TableRow>
-        );
-      })}
-    </TableBody>
-  );
-}
+    // обработать даблклик
+    const handleOnDoubleClick = useCallback((e: React.MouseEvent) => {
+      const eventTarget = e.target as HTMLElement;
+      const textContent = eventTarget.textContent as string;
+      const dataType = eventTarget.dataset.dataType as string;
+      const cellName = eventTarget.dataset.cellname as string;
+      const rowId = eventTarget.dataset.rowid as string;
+      const currentCellStyle = window.getComputedStyle(eventTarget);
+
+      setWasDoubleClickByCell(true);
+      setValueInputCell({ start: textContent, new: textContent });
+      setParamsInputCell({
+        dataType,
+        cellName,
+        rowId: rowId,
+        style: {
+          padding: currentCellStyle.padding,
+          fontSize: currentCellStyle.fontSize,
+          fontWeight: currentCellStyle.fontWeight,
+          fontFamily: currentCellStyle.fontFamily,
+          lineHeight: currentCellStyle.lineHeight,
+        },
+      });
+    }, []);
+
+    return (
+      <TableBody
+        id='tableBodyProducts'
+        onDoubleClick={handleOnDoubleClick}
+      >
+        {dataProducts.map((row: Data) => {
+          return (
+            <TableRowCustom
+              key={row.id}
+              currentRow={row}
+              paramsInputCell={paramsInputCell}
+              valueInputCell={valueInputCell}
+              setValueInputCell={setValueInputCell}
+              wasDoubleClickByCell={wasDoubleClickByCell}
+              setWasDoubleClickByCell={setWasDoubleClickByCell}
+              resetStatesByDefault={resetStatesByDefault}
+            />
+          );
+        })}
+      </TableBody>
+    );
+  },
+);
 
 export default TableBodyCustom;

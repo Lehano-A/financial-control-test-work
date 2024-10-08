@@ -1,5 +1,5 @@
-import { Data } from '../../../../../../data/types/dataProduct.types';
+import { ContainerTableProductsProps } from '../../../types/containerTableProductsProps.types';
 
 export interface TableFooterCustomProps {
-  dataProducts: Data[];
+  dataProducts: ContainerTableProductsProps['dataProducts'];
 }

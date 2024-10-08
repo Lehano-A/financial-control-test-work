@@ -1,6 +1,6 @@
 export interface ParamsInputCell {
   dataType: string;
-  name: string;
+  cellName: string;
   rowId: string;
   style?: {
     [key: string]: string;

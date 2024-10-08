@@ -1,34 +1,31 @@
 import { styled } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
-import getBorderStyleTableCell from '../../../../../../helpers/getBorderStyleTableCell';
 import validateValue from '../../../../../../helpers/validateValue';
 import { InputCellProps } from './types/inputCellProps.types';
 import { StyledInputProps } from './types/styledInputProps.types';
 import { ValueInputCell } from './types/valueInputCell.types';
 
-const StyledTd = styled('td')(({ theme }) => {
-  const border = getBorderStyleTableCell(theme.palette.common.white);
-
-  return {
-    textAlign: 'left',
-    borderRight: border,
-    borderBottom: border,
-  };
-});
-
-const StyledInput = styled('input')<StyledInputProps>(({
+const StyledInput = styled('textarea')<StyledInputProps>(({
   theme,
   style,
   isValidationError,
 }) => {
   return {
+    resize: 'none',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    maxWidth: '600px',
     textAlign: 'left',
     outline: 'none',
     border: 'none',
     color: theme.palette.accent.main,
     animation: isValidationError ? `changeBgColor 0.5s linear` : 'none',
-    backgroundColor: 'transparent',
+    backgroundColor: theme.palette.accent.light,
+    zIndex: 1,
 
     '@keyframes changeBgColor': {
       '0%': {
@@ -38,23 +35,41 @@ const StyledInput = styled('input')<StyledInputProps>(({
         backgroundColor: 'transparent',
       },
     },
-    ...style,
+    ...style, // стили получаемые от ячейки
   };
 });
 
 function InputCell({
-  autoFocus,
   style,
-  setValueInputCell,
+  dataType,
   valueInputCell,
-  isDraggingFakeScroll,
+  setValueInputCell,
   setWasDoubleClickByCell,
   resetStatesByDefault,
-  dataType,
 }: InputCellProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const [isValidationError, setIsValidationError] = useState(false);
+  const [currentValue, setCurrentValue] = useState(valueInputCell.start);
+  const [inputFinished, setInputFinished] = useState(false);
+
+  useEffect(() => {
+    if (inputFinished) {
+      // если завершили ввод (через 'Enter')
+      setWasDoubleClickByCell(false);
+    }
+  }, [inputFinished]);
+
+  useEffect(() => {
+    const textarea = inputRef.current;
+
+    if (textarea && currentValue) {
+      const lengthCurrentValue = String(currentValue).length;
+
+      textarea.focus();
+      textarea.setSelectionRange(lengthCurrentValue, lengthCurrentValue); // устанавливаем каретку в конец строки (без этого - устаналивается в самое начало строки)
+    }
+  }, []);
 
   // обработать изменение поля ввода
   function handleOnChange(e: React.ChangeEvent<HTMLElement>) {
@@ -69,30 +84,14 @@ function InputCell({
     }
 
     setIsValidationError(false);
-    setValueInputCell((prevState: ValueInputCell) => ({
-      ...prevState,
-      new: newValue,
-    }));
+    setCurrentValue(newValue);
   }
 
   // обработать потерю фокуса поля ввода
   function handleOnBlur() {
-    // если нет перетаскивания скролла
-    if (!isDraggingFakeScroll) {
-      setValueInputCell({
-        start: valueInputCell.start,
-        new: valueInputCell.new,
-      });
-      setIsValidationError(false);
-      setWasDoubleClickByCell(false);
-      resetStatesByDefault();
-      return;
-    }
-
-    // если есть перетаскивание, тогда фокусируемся на инпуте
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    setIsValidationError(false);
+    setWasDoubleClickByCell(false);
+    resetStatesByDefault();
   }
 
   // обработать завершение анимации
@@ -100,21 +99,32 @@ function InputCell({
     if (isValidationError) setIsValidationError(false);
   }
 
+  // обработать нажатие "Enter"
+  function handleOnKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      setInputFinished(true);
+      setValueInputCell((prevState: ValueInputCell) => ({
+        ...prevState,
+        new: currentValue,
+      }));
+    }
+  }
+
   return (
-    <StyledTd>
-      <StyledInput
-        ref={inputRef}
-        size={String(valueInputCell.new).length}
-        autoFocus={autoFocus}
-        style={style}
-        onChange={handleOnChange}
-        onBlur={handleOnBlur}
-        data-datatype={dataType}
-        value={valueInputCell.new}
-        isValidationError={isValidationError}
-        onAnimationEnd={handleAnimationEnd}
-      />
-    </StyledTd>
+    <StyledInput
+      spellCheck={false}
+      ref={inputRef}
+      style={style}
+      value={currentValue}
+      data-datatype={dataType}
+      isValidationError={isValidationError}
+      onBlur={handleOnBlur}
+      onChange={handleOnChange}
+      onKeyDown={handleOnKeyDown}
+      onAnimationEnd={handleAnimationEnd}
+    />
   );
 }
 

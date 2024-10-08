@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { keyStorageDataProducts } from '../../constants/constants';
 import fileDataProducts from '../../data/dataProducts.json';
-import { Data } from '../../data/types/dataProduct.types';
 import useLocalStorageDataTable from '../../hooks/useLocalStorageDataTable';
 import Preloader from '../Preloader/Preloader';
 import ContainerTableProducts from './ContainerTableProducts/ContainerTableProducts';
