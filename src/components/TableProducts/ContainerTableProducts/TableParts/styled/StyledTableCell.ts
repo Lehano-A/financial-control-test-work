@@ -1,9 +1,8 @@
-import { styled, TableCell, Theme } from '@mui/material';
+import { styled, TableCell } from '@mui/material';
 
 import getBorderStyleTableCell from '../../../../../helpers/getBorderStyleTableCell';
 
 export interface StyledTableCellProps {
-  // theme: Theme;
   position?: 'static' | 'relative' | 'sticky';
 }
 
@@ -16,7 +15,7 @@ const StyledTableCell = styled(TableCell)<StyledTableCellProps>(({
   return {
     position: position,
     maxWidth: '300px',
-    fontSize: '10px',
+    fontSize: '11px',
     textAlign: 'left',
     verticalAlign: 'center',
     borderBottom: border,
