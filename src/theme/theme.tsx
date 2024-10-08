@@ -83,9 +83,14 @@ const globalStyles = (
       },
       '#root': {
         display: 'flex',
+        justifyContent: 'center',
         width: '100%',
         height: '100vh',
         backgroundColor: theme.palette.shades.grey[400],
+
+        '& > :nth-of-type(1n)': {
+          marginTop: '15px',
+        },
       },
 
       'div, section, button': {
