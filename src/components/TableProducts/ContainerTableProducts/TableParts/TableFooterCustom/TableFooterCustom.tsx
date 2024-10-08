@@ -1,4 +1,4 @@
-import { TableFooter as MuiTableFooter, styled } from '@mui/material';
+import { TableFooter as MuiTableFooter, styled, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 import { Data } from '../../../../../data/types/dataProduct.types';
@@ -15,8 +15,16 @@ const TableFooter = styled(MuiTableFooter)(() => ({
   zIndex: 2,
 }));
 
-const TableRow = styled(StyledTableRow)(() => ({
+const TableRow = styled(StyledTableRow)(({ theme }) => ({
   width: '100%',
+
+  '& :is(th, td)': {
+    fontWeight: 'bold',
+  },
+
+  '& td': {
+    color: theme.palette.secondary.main,
+  },
 }));
 
 const TotalTableCell = styled(StyledTableCell)(() => ({
@@ -31,6 +39,8 @@ function TableFooterCustom({ dataProducts }: TableFooterCustomProps) {
     price: string;
     product_quantity: string;
   } | null>(null);
+
+  const theme = useTheme();
 
   // когда меняются значения в данных, то осуществляем пересчёт
   useEffect(() => {
