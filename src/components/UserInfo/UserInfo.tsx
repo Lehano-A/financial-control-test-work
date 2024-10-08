@@ -4,7 +4,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Button, Chip as MuiChip, styled } from '@mui/material';
 
 const Section = styled('section')(({ theme }) => ({
-  minWidth: '735px',
   minHeight: '60px',
   display: 'flex',
   justifyContent: 'space-between',

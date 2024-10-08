@@ -8,6 +8,10 @@ const StyledMain = styled('main')(() => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+
+  '& > :nth-child(1n):not(:last-child)': {
+    maxWidth: '750px',
+  },
 }));
 
 function Main() {
