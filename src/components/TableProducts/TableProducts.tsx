@@ -23,6 +23,10 @@ const CommonBox = styled(Box)(({ theme }) => ({
     height: 0,
     width: 0,
   },
+
+  '& > p': {
+    fontSize: '13px',
+  },
 }));
 
 export default function TableProducts({
