@@ -33,7 +33,7 @@ const Value = styled('dd')(({ theme }) => ({
 }));
 
 const BoxKeyValueDropDown = styled(BoxKeyValue)(() => ({
-  width: '95px',
+  minWidth: '95px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -47,6 +47,7 @@ const KeyDropDown = styled(Key)(({ theme }) => ({
 }));
 
 const ValueDropDown = styled(Value)(({ theme }) => ({
+  width: 'max-content',
   margin: 0,
   padding: 0,
   background: 'none',
@@ -60,6 +61,7 @@ const ValueDropDown = styled(Value)(({ theme }) => ({
   '.MuiNativeSelect-select.MuiInputBase-input.MuiInput-input': {
     paddingTop: 0,
     paddingBottom: 0,
+    paddingRight: '15px',
 
     '&:hover': { borderBottom: 'none', animation: 'none' },
   },
