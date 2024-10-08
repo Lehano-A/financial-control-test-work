@@ -9,7 +9,7 @@ const StyledMain = styled('main')(() => ({
   flexDirection: 'column',
   width: '100%',
 
-  '& > :nth-child(1n):not(:last-child)': {
+  '& > :nth-of-type(1n):not(:last-child)': {
     maxWidth: '750px',
   },
 }));
