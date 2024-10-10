@@ -1,4 +1,4 @@
-import { Data } from '../data/types/dataProduct.types';
+import { Data } from '../dataProducts/types/dataProduct.types';
 
 function assignCellValue<T extends keyof Data>(
   item: Data,

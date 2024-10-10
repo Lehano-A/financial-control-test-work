@@ -1,3 +1,3 @@
-import { Data } from '../../../data/types/dataProduct.types';
+import { Data } from '../../../dataProducts/types/dataProduct.types';
 
 export type DataProducts = Data[] | [] | null;

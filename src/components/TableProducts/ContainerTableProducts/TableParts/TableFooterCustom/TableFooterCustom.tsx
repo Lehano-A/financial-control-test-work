@@ -1,7 +1,7 @@
 import { TableFooter as MuiTableFooter, styled } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { Data } from '../../../../../data/types/dataProduct.types';
+import { Data } from '../../../../../dataProducts/types/dataProduct.types';
 import TableCellCustom from '../TableCellCustom/TableCellCustom';
 import StyledTableCell from '../styled/StyledTableCell';
 import StyledTableRow from '../styled/StyledTableRow';

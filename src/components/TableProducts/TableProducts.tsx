@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 
 import { keyStorageDataProducts } from '../../constants/constants';
-import fileDataProducts from '../../data/dataProducts.json';
+import fileDataProducts from '../../dataProducts/dataProducts.json';
 import useLocalStorageDataTable from '../../hooks/useLocalStorageDataTable';
 import Preloader from '../Preloader/Preloader';
 import ContainerTableProducts from './ContainerTableProducts/ContainerTableProducts';

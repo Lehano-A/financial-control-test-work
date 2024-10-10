@@ -1,4 +1,4 @@
-import { Data } from '../../../../../../data/types/dataProduct.types';
+import { Data } from '../../../../../../dataProducts/types/dataProduct.types';
 import { ParamsInputCell } from '../../TableBodyCustom/InputCell/types/paramsInputCell.types';
 import { TableBodyCustomProps } from '../../TableBodyCustom/types/tableBodyCustomProps.types';
 

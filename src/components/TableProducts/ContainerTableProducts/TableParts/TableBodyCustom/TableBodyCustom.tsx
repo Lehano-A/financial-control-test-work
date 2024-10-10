@@ -2,7 +2,7 @@ import { styled, TableBody as MuiTableBody } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { keyStorageDataProducts } from '../../../../../constants/constants';
-import { Data } from '../../../../../data/types/dataProduct.types';
+import { Data } from '../../../../../dataProducts/types/dataProduct.types';
 import assignCellValue from '../../../../../helpers/assignCellValue';
 import findIndexItemDataProducts from '../../../../../helpers/findIndexItemDataProducts';
 import useLocalStorageDataTable from '../../../../../hooks/useLocalStorageDataTable';

@@ -1,6 +1,6 @@
 import { TableHead, TableSortLabel } from '@mui/material';
 
-import { Data } from '../../../../../data/types/dataProduct.types';
+import { Data } from '../../../../../dataProducts/types/dataProduct.types';
 import sortColumn from '../../../../../helpers/sortColumn';
 import TableCell from '../styled/StyledTableCell';
 import TableRow from '../styled/StyledTableRow';

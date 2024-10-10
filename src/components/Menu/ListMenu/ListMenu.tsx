@@ -10,9 +10,9 @@ import {
 import { styled, Theme } from '@mui/material/styles';
 import React, { MouseEvent, useEffect, useState } from 'react';
 
-import { IsOpenState } from './ListMenu.types';
 import NestedList from './NestedList/NestedList';
-import dataList from './data';
+import dataListMenu from './dataListMenu';
+import { IsOpenState } from './types/ListMenu.types';
 
 const List = styled(MuiList)(() => ({
   display: 'flex',
@@ -42,7 +42,7 @@ function ListMenu() {
   const [isOpen, setIsOpen] = useState<IsOpenState>({});
 
   useEffect(() => {
-    dataList.forEach((item) => {
+    dataListMenu.forEach((item) => {
       const { main } = item;
       setIsOpen((prevState) => {
         return { ...prevState, [main.name]: false };
@@ -60,7 +60,7 @@ function ListMenu() {
 
   return (
     <List>
-      {dataList.map((item, id) => {
+      {dataListMenu.map((item, id) => {
         const { main, nested } = item;
 
         return (

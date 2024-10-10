@@ -1,6 +1,6 @@
 import { SortColumn } from '../components/TableProducts/ContainerTableProducts/TableParts/TableHeadCustom/types/sortColumn.types';
 import { DataProducts } from '../components/TableProducts/types/dataProducts.types';
-import { Data } from '../data/types/dataProduct.types';
+import { Data } from '../dataProducts/types/dataProduct.types';
 import compareValues from './compareValues';
 
 function sortColumn({

@@ -3,7 +3,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import StorageIcon from '@mui/icons-material/Storage';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 
-const dataList = [
+const dataListMenu = [
   {
     main: {
       name: 'Настройки',
@@ -67,4 +67,4 @@ const dataList = [
   },
 ];
 
-export default dataList;
+export default dataListMenu;

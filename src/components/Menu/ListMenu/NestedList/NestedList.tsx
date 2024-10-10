@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { NestedListProps } from './NestedList.types';
+import { NestedListProps } from './types/NestedList.types';
 
 const ListItemButton = styled(MuiListItemButton)(() => ({
   paddingLeft: '48px',

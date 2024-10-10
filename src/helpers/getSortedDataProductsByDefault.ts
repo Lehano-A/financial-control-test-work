@@ -1,5 +1,5 @@
 import { DataProducts } from '../components/TableProducts/types/dataProducts.types';
-import { Data } from '../data/types/dataProduct.types';
+import { Data } from '../dataProducts/types/dataProduct.types';
 import compareValues from './compareValues';
 
 function getSortedDataByDefault(dataProducts: DataProducts) {

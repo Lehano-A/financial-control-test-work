@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Data } from '../../../../../data/types/dataProduct.types';
+import { Data } from '../../../../../dataProducts/types/dataProduct.types';
 import InputCell from '../TableBodyCustom/InputCell/InputCell';
 import TableCellCustom from '../TableCellCustom/TableCellCustom';
 import TableRow from '../styled/StyledTableRow';
