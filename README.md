@@ -1,6 +1,6 @@
 # financial-control-test-work
 
-URL: https://lehano-a.github.io/financial-control/
+URL: https://lehano-a.github.io/financial-control-test-work/
 
 Здравствуйте! 🖖
 
