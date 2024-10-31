@@ -1,8 +1,10 @@
 # financial-control-test-work
 
-URL: https://lehano-a.github.io/financial-control-test-work/
+## Визуализация
+https://lehano-a.github.io/financial-control-test-work/
 
-Здравствуйте! 🖖
+## Техническое задание
+https://disk.yandex.ru/d/OYdBC97zEwGssQ
 
 ## Что это за проект
 Это решение для тестового задания
